@@ -1,24 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
-
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate, Outlet
+} from "react-router-dom";
+import NotFound from "./pages/NotFoundPage/NotFound";
+import AdminHome from "./pages/HomePage/AdminHome.jsx";
+import Login from "./pages/LoginPage/Login.jsx";
 function App() {
+  const user = true
+  const ProtectedRoute = () => {
+    if(user) {
+      return <Navigate to='/' replace />
+    }
+    return <Outlet/>
+  }
+  const ProtectedUser = () => {
+    if(user == null) {
+      return <Navigate to='/login' replace />
+    }
+    return <Outlet/>
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<ProtectedRoute/>}>
+          <Route path="/login" element={<Login/>}/>
+        </Route>
+        <Route element={<ProtectedUser/>}>
+          <Route path="/" element={<AdminHome/>}/>
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
