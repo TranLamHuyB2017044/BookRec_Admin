@@ -6,8 +6,18 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import Avatar from '../../assets/hinhthe_tranlamhuy.jpg'
 import { Badge, IconButton } from '@mui/material';
+import { Logout } from '../../store/userReducer'
+import { useDispatch } from 'react-redux';
+
 export default function Navbar({onToggleSidebar}) {
     const [showSubNav, setShowSubNav] = useState(false)
+    const dispatch = useDispatch()
+
+    const SignOut = () => {
+        dispatch(Logout())
+        window.localStorage.removeItem('persist:root')
+    }
+
     return ( 
         <div className='flex justify-between px-8 bg-white  h-[60px] shadow-custom bg-opacity-58'>
             <div className='flex items-center gap-16'>
@@ -29,7 +39,7 @@ export default function Navbar({onToggleSidebar}) {
                 <button onClick={() => setShowSubNav(!showSubNav)} className='cursor-pointer relative'>Tran lam huy <ArrowDropDownIcon fontSize='large'/>
                     {showSubNav && <ul className='absolute top-[42px] border right-[0px] z-50 shadow-custom bg-opacity-58 bg-white  w-[250px]'>
                         <div className='flex items-center gap-4 py-3 pl-4    hover:bg-slate-200'><PersonOutlineOutlinedIcon fontSize='large'/> <p>My Profile</p></div>
-                        <div className='flex items-center gap-4 py-3 pl-4   border-t   hover:bg-slate-200'><LogoutOutlinedIcon fontSize='large'/> <p>Log out</p></div>
+                        <div onClick={SignOut} className='flex items-center gap-4 py-3 pl-4   border-t   hover:bg-slate-200'><LogoutOutlinedIcon fontSize='large'/> <p>Log out</p></div>
                     </ul>}
                 </button>
             </div>

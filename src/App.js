@@ -7,28 +7,30 @@ import {
 import NotFound from "./pages/NotFoundPage/NotFound";
 import AdminHome from "./pages/HomePage/AdminHome.jsx";
 import Login from "./pages/LoginPage/Login.jsx";
+import { useSelector } from "react-redux";
 function App() {
-  const user = true
+  const user = useSelector(state => state.currentUser)
+  console.log(user)
   const ProtectedRoute = () => {
-    if(user) {
+    if (user) {
       return <Navigate to='/' replace />
     }
-    return <Outlet/>
+    return <Outlet />
   }
   const ProtectedUser = () => {
-    if(user == null) {
+    if (user == null) {
       return <Navigate to='/login' replace />
     }
-    return <Outlet/>
+    return <Outlet />
   }
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<ProtectedRoute/>}>
-          <Route path="/login" element={<Login/>}/>
+        <Route element={<ProtectedUser />}>
+          <Route path="/" element={<AdminHome />} />
         </Route>
-        <Route element={<ProtectedUser/>}>
-          <Route path="/" element={<AdminHome/>}/>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/login" element={<Login />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
