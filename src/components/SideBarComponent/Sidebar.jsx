@@ -18,7 +18,7 @@ export default function Sidebar({ toggle }) {
 
   return (
     <div>
-      <div className={`bg-white h-screen transition-all ease-in-out duration-300 ${toggle ? ' ' : '-translate-x-full'}`}>
+      <div className={`bg-white h-[170vh] transition-all ease-in-out duration-300 ${toggle ? ' ' : '-translate-x-full'}`}>
         <ul className='pt-16 flex flex-col gap-6'>
           {sideBarArray.map((item, index) => (
             <div key={item.id} onClick={() => setActive(index)} style={{ color: active === index ? 'dodgerblue' : '' }} className='flex items-center gap-4 ml-12 pt-5  cursor-pointer hover:text-[dodgerblue]'>

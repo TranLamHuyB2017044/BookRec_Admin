@@ -3,7 +3,7 @@ import loginIMG from '../../assets/dont-make-me-think-krug.jpg'
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import { PublicRequest } from '../../service/Request'
+import {  UserRequest } from '../../service/Request'
 import { useDispatch } from 'react-redux'
 import MyAlert from '../../components/AlertComponent/Alert'
 import { SignIn } from '../../store/userReducer'
@@ -30,7 +30,7 @@ export default function Login() {
     setLoading(true)
     setTimeout(async () => {
       try {
-        const user = await PublicRequest.post('/api/user/login/admin', data)
+        const user = await UserRequest.post('/user/login/admin', data)
         dispatch(SignIn(user.data))
         setLoading(false)
         MyAlert.Toast('success', 'Login successfully')

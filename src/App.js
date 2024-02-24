@@ -10,7 +10,6 @@ import Login from "./pages/LoginPage/Login.jsx";
 import { useSelector } from "react-redux";
 function App() {
   const user = useSelector(state => state.currentUser)
-  console.log(user)
   const ProtectedRoute = () => {
     if (user) {
       return <Navigate to='/' replace />
