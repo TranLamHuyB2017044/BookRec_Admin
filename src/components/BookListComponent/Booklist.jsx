@@ -1,22 +1,22 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import PrintIcon from '@mui/icons-material/Print';
+// import PrintIcon from '@mui/icons-material/Print';
 import SearchIcon from '@mui/icons-material/Search';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { DataGrid } from '@mui/x-data-grid';
 import { PublicRequest, UserRequest } from '../../service/Request'
-import FormBook from './FormBook';
+import FormBook from './CreateBook/FormBook';
 import MyAlert from '../../components/AlertComponent/Alert'
 import { useSelector } from 'react-redux';
 import Swal from "sweetalert2";
+import { Link} from 'react-router-dom';
+
 
 export default function Booklist() {
     const user = useSelector(state => state.currentUser)
     const [bookList, setBookList] = useState([])
     const [showToggle, setShowToggle] = useState(false)
-    const [loading, setLoading] = useState(false)
-    // const [showUpdateBook, setShowUpdateBook] = useState(false)
     const [query, setQuery] = useState('');
     const [debouncedQuery, setDebouncedQuery] = useState('');
     useEffect(() => {
@@ -41,7 +41,7 @@ export default function Booklist() {
             }
         }
         getBookList()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedQuery])
 
     const columns = [
@@ -94,7 +94,7 @@ export default function Booklist() {
             field: 'Nhập thêm hàng', headerName: 'Nhập hàng', width: 100, renderCell: (params) => {
                 return (
                     <div className=' cursor-pointer flex gap-8'>
-                        <button className='text-[dodgerblue]' onClick={() => setShowToggle(true)}><EditNoteOutlinedIcon fontSize='large' /></button>
+                        <Link to={(`/update/${params.row.book_id}`)} className='text-[dodgerblue]'><EditNoteOutlinedIcon fontSize='large' /></Link>
                         <button onClick={() => handleDeleteBook(params.row.book_id)} className='text-red-500'><DeleteOutlineOutlinedIcon fontSize='large' /></button>
                     </div>
                 );
@@ -106,68 +106,71 @@ export default function Booklist() {
         setShowToggle(false)
         window.scrollTo(0, 0);
     }
-    
-    const handleDeleteBook =  (id) => {
-        MyAlert.Confirm('Xóa sách', 'question', 'Bạn có chắc là muốn xóa sách này không', 'Có', 'Thoát')
-        .then(async(result) => {
-          if (result.value) {
-            const { value: password } = await Swal.fire({
-                title: "Vui lòng nhập password của bạn để xóa",
-                input: "password",
-                inputLabel: "Password",
-                inputPlaceholder: "Enter your password",
-                inputAttributes: {
-                  maxlength: "10",
-                  autocapitalize: "off",
-                  autocorrect: "off"
-                }
-            });
-            if (password) {
-                const response = await UserRequest.post('/user/login/admin', {email: user.email, password: password});
-                if(response.status === 200){
-                    const deleteBook = await UserRequest.delete(`/collection/${id}`)
-                    if(deleteBook.status === 200){
-                        MyAlert.Alert('success', `${deleteBook.data.message}`);
-                        setQuery('')
-                    }else{
-                        MyAlert.Alert('error', `${deleteBook.data.response}`);
-                    }
-                }else{
-                    Swal.fire(`Sai mật khẩu`);
-                }
-            }
 
-          }
-        })
-        .catch(error => {
-          const errorMessage = error.response?.data || "An error occurred.";
-          MyAlert.Alert("error", errorMessage);
-        });
-        
+    const handleDeleteBook = (id) => {
+        MyAlert.Confirm('Xóa sách', 'question', 'Bạn có chắc là muốn xóa sách này không', 'Có', 'Thoát')
+            .then(async (result) => {
+                if (result.value) {
+                    const { value: password } = await Swal.fire({
+                        title: "Vui lòng nhập password của bạn để xóa",
+                        input: "password",
+                        inputLabel: "Password",
+                        inputPlaceholder: "Enter your password",
+                        inputAttributes: {
+                            maxlength: "10",
+                            autocapitalize: "off",
+                            autocorrect: "off"
+                        }
+                    });
+                    if (password) {
+                        const response = await UserRequest.post('/user/login/admin', { email: user.email, password: password });
+                        if (response.status === 200) {
+                            const deleteBook = await UserRequest.delete(`/collection/${id}`)
+                            if (deleteBook.status === 200) {
+                                MyAlert.Alert('success', `${deleteBook.data.message}`);
+                                setQuery('')
+                            } else {
+                                MyAlert.Alert('error', `${deleteBook.data.response}`);
+                            }
+                        } else {
+                            Swal.fire(`Sai mật khẩu`);
+                        }
+                    }
+
+                }
+            })
+            .catch(error => {
+                const errorMessage = error.response?.data || "An error occurred.";
+                MyAlert.Alert("error", errorMessage);
+            });
+
     }
 
     const handleChangeQuery = (e) => {
         setQuery(e.target.value);
     }
+
     return (
-        <div className='bg-[#e3e7f1]  '>
+        <div className='bg-[#e3e7f1] '>
             <div className='flex items-center justify-between px-40 mt-10'>
                 <div className='flex gap-4'>
-                    <button onClick={() => setShowToggle(true)} className='active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-2 rounded-md border border-white bg-[dodgerblue] text-white flex items-center w-[120px] gap-2 justify-center'><AddIcon />Nhập sách</button>
-                    {/* <button className='active:translate-y-1 px-4 py-2 rounded-md border border-white bg-[dodgerblue] hover:bg-gradient-to-r from-blue-500 to-cyan-400  text-white flex items-center w-[120px] gap-2 justify-center'><PrintIcon /> In</button> */}
+                    <button  onClick={() => setShowToggle(true)} 
+                        className='active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-2 rounded-md 
+                        border border-white bg-[dodgerblue] text-white flex items-center w-[120px] gap-2 justify-center'
+                    ><AddIcon />Nhập sách</button>
                 </div>
 
-                <div className='flex items-center gap-2 relative'>
-                    <div className='absolute left-1 text-[dodgerblue]'>
+                <div className='flex items-center gap-2 relative' >
+                    <div className='absolute left-1 top-[3px] text-[dodgerblue]'>
                         <SearchIcon fontSize='large' />
                     </div>
                     <input onChange={handleChangeQuery} value={query || ''} className='rounded-md border-[1px] border-gray-400 py-1 h-[33px] pl-12 w-[300px]' type="text" placeholder='Tìm kiếm theo tên sách' />
                 </div>
             </div>
-            {showToggle === true ? (
-                <FormBook handleOutToogle={handleOutToogle}/>
+            {showToggle === true  ? (
+                <FormBook handleOutToogle={handleOutToogle} />
             ) :
-                <div style={{ height: 440, width: '100%' }} className=' mt-12 px-16 '>
+                <div style={{ height: 440, width: '100%'}} className=' mt-12 px-16 '>
                     <DataGrid initialState={{
                         pagination: {
                             paginationModel: {
@@ -178,7 +181,6 @@ export default function Booklist() {
                         pageSizeOptions={[50]} getRowId={(row) => row.book_id} style={{ fontSize: '1.5rem' }} rows={bookList} columns={columns} className='bg-white' />
                 </div>
             }
-
         </div>
     );
 }

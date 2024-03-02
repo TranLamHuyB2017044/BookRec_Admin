@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFoundPage/NotFound";
 import AdminHome from "./pages/HomePage/AdminHome.jsx";
 import Login from "./pages/LoginPage/Login.jsx";
 import { useSelector } from "react-redux";
+import FormUpdate from "./components/BookListComponent/UpdateBook/formUpdate.jsx";
 function App() {
   const user = useSelector(state => state.currentUser)
   const ProtectedRoute = () => {
@@ -27,6 +28,7 @@ function App() {
       <Routes>
         <Route element={<ProtectedUser />}>
           <Route path="/" element={<AdminHome />} />
+          <Route path="/update/:slug" element={<FormUpdate />} />
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/login" element={<Login />} />

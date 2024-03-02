@@ -1,0 +1,54 @@
+import React, { useEffect, useState } from 'react'
+import { useForm } from "react-hook-form";
+import { PublicRequest } from '../../../service/Request'
+import MyAlert from '../../AlertComponent/Alert'
+import Loading from '../../LoadingComponent/Loading'
+import UpdateBookLeft from './UpdateBookLeft';
+import UpdateBookRight from './UpdateBookRight';
+import { useParams } from 'react-router-dom';
+export default function UpdateBookForm({setShowForm}) {
+ 
+    const [bookData, setBookData] = useState({})
+    const params = useParams()
+    const book_id = params.slug
+
+    useEffect(() => {
+        const getDataBook = async () => {
+            try {
+                const response = await PublicRequest.get(`/collection/${book_id}`)
+                setBookData(response.data[0])
+            } catch (error) {
+                console.log(error.response.data)
+            }
+        }
+        getDataBook()
+    }, [book_id])
+
+        
+    const { register, handleSubmit} = useForm({})
+
+    const onChange = (e) => {
+        setBookData({ ...setBookData, [e.target.name]: e.target.value });
+    };
+
+    const onSubmit = async (data) => {
+        // const {title, short_description, category, avg_rating, original_price, inStock, discount, pages, publication_date} = data
+        // if()
+    }
+  
+  return (
+    <div className='py-20 px-36'>
+        <h1 className='text-center text-5xl mb-12 font-semibold'>Chỉnh sửa thông tin về sách</h1>
+        <form action="#" onSubmit={handleSubmit(onSubmit)}>
+            <div className='flex justify-center gap-16'>
+                <UpdateBookLeft onChange={onChange}  register={register} book={bookData}/>
+                <UpdateBookRight onChange={onChange}  register={register} book={bookData}/>
+            </div>
+            <div className='flex justify-center gap-8 mt-8'>
+                <button className='hover:bg-gradient-to-r from-red-500 to-red-400 px-4 py-2 rounded-md border text-white  w-[120px] bg-[#d84949] ' type='submit'>Chỉnh sửa</button>
+                <button type='button' className='hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-2 rounded-md border  w-[120px] bg-[dodgerblue] text-white' onClick={setShowForm}>Trở về</button>
+            </div>
+        </form>
+    </div>
+  )
+}

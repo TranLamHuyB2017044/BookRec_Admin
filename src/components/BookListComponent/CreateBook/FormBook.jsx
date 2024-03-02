@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import { PublicRequest } from '../../service/Request'
-import MyAlert from '../../components/AlertComponent/Alert'
-import Loading from '../../components/LoadingComponent/Loading'
+import { PublicRequest } from '../../../service/Request'
+import MyAlert from '../../AlertComponent/Alert'
+import Loading from '../../LoadingComponent/Loading'
 import BookFormLeft from './BookFormLeft';
 import BookFormRight from './BookFormRight';
 import RestInfo from './RestInfo';
