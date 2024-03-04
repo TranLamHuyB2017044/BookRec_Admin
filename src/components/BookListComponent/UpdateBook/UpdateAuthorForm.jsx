@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import { PublicRequest } from '../../../service/Request';
+import { PublicRequest, UserRequest } from '../../../service/Request';
 import { useParams } from 'react-router-dom';
+import MyAlert from '../../AlertComponent/Alert'
+
 export default function UpdateAuthorForm({ setShowForm }) {
     const [authorkData, setAuthorData] = useState('')
     const params = useParams()
@@ -14,7 +16,7 @@ export default function UpdateAuthorForm({ setShowForm }) {
             setAuthorData(response.data[0].author_name)
         }
         getAuthorData()
-    }, [])
+    }, [book_id])
     const schema = yup
         .object({
             author_name: yup.string().required("Tên tác giả là bắt buộc"),
@@ -28,7 +30,18 @@ export default function UpdateAuthorForm({ setShowForm }) {
 
 
     const onSubmit = async (data) => {
-
+        console.log(data.author_name)
+        console.log(authorkData)
+        try {
+            if(data.author_name === authorkData){
+                MyAlert.Alert('error', 'Không có thay đổi thông tin tác giả')
+            }else{
+                const response = await UserRequest.put(`/collection/author/${book_id}`, data)
+                MyAlert.Alert(response.data.status, 'Cập nhật tên tác giả thành công')
+            }
+        } catch (error) {
+            MyAlert.Alert('error',error.response.data.message)
+        }
     }
     return (
         <div>

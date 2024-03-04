@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 import { Link} from 'react-router-dom';
 
 
-export default function Booklist() {
+export default function Booklist({isSidebarOpen}) {
     const user = useSelector(state => state.currentUser)
     const [bookList, setBookList] = useState([])
     const [showToggle, setShowToggle] = useState(false)
@@ -55,7 +55,7 @@ export default function Booklist() {
             },
         },
         {
-            field: 'Tên sách', headerName: 'Tên sách', width: 550, renderCell: (params) => {
+            field: 'Tên sách', headerName: 'Tên sách', width: isSidebarOpen ? 550 : 800, renderCell: (params) => {
                 return (
                     <div>
                         <p>{params.row.title}</p>
@@ -91,7 +91,7 @@ export default function Booklist() {
             },
         },
         {
-            field: 'Nhập thêm hàng', headerName: 'Nhập hàng', width: 100, renderCell: (params) => {
+            field: 'Chỉnh sửa', headerName: 'Chỉnh sửa', width: 100, renderCell: (params) => {
                 return (
                     <div className=' cursor-pointer flex gap-8'>
                         <Link to={(`/update/${params.row.book_id}`)} className='text-[dodgerblue]'><EditNoteOutlinedIcon fontSize='large' /></Link>

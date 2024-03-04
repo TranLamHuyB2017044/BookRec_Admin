@@ -20,7 +20,7 @@ export default function AdminHome() {
         <div className={`col-span-4 transition-all ease-in-out duration-300  flex flex-col justify-between ${isSidebarOpen ? ' ' : '-translate-x-[300px] mx-auto w-[98vw]'}`}>
           <div className='h-fit'>
             <h1 className='font-semibold text-5xl ml-16 my-5'>Kiểm kho</h1>
-            <Booklist/>
+            <Booklist isSidebarOpen={isSidebarOpen}/>
           </div>
           <div className='h-[80px]'><Footer/></div>
         </div>

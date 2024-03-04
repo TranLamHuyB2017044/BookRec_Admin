@@ -11,7 +11,7 @@ export default function UpdateBookForm({setShowForm}) {
     const [bookData, setBookData] = useState({})
     const params = useParams()
     const book_id = params.slug
-
+    console.log(bookData)
     useEffect(() => {
         const getDataBook = async () => {
             try {
@@ -28,10 +28,11 @@ export default function UpdateBookForm({setShowForm}) {
     const { register, handleSubmit} = useForm({})
 
     const onChange = (e) => {
-        setBookData({ ...setBookData, [e.target.name]: e.target.value });
+        setBookData({[e.target.name]: e.target.value });
     };
 
     const onSubmit = async (data) => {
+        console.log(data)
         // const {title, short_description, category, avg_rating, original_price, inStock, discount, pages, publication_date} = data
         // if()
     }
