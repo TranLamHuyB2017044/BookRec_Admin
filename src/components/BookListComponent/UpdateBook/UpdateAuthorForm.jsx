@@ -38,6 +38,7 @@ export default function UpdateAuthorForm({ setShowForm }) {
             }else{
                 const response = await UserRequest.put(`/collection/author/${book_id}`, data)
                 MyAlert.Alert(response.data.status, 'Cập nhật tên tác giả thành công')
+                await setShowForm()
             }
         } catch (error) {
             MyAlert.Alert('error',error.response.data.message)

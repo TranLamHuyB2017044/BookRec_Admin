@@ -44,21 +44,6 @@ export default function UpdateBookLeft({ onChange, register, book }) {
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
-                <label className='min-w-[130px] ' htmlFor="publication_date">Ngày xuất bản</label>
-                <div className=''>
-
-                    <input
-                        className='w-[250px] rounded-md h-[35px] pl-2 border border-black'
-                        type="text"
-                        id='publication_date'
-                        onChange={onChange}
-                        defaultValue={book.publication_date}
-                        placeholder='yyyy-mm-dd'
-                        {...register(`publication_date`)}
-                    />
-                </div>
-            </div>
-            <div className='form-group  flex gap-2 my-6'>
                 <label className='min-w-[130px] ' htmlFor="avg_rating">Số sao đánh giá</label>
                 <div className=''>
                     <input
