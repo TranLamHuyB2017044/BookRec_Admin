@@ -160,7 +160,7 @@ export default function Booklist({isSidebarOpen}) {
                     ><AddIcon />Nhập sách</button>
                 </div>
 
-                <div className='flex items-center gap-2 relative' >
+                <div style={showToggle ? {display: 'none'} : {display: 'flex'}} className='flex items-center gap-2 relative' >
                     <div className='absolute left-1 top-[3px] text-[dodgerblue]'>
                         <SearchIcon fontSize='large' />
                     </div>

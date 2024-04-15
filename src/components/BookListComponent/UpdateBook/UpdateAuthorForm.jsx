@@ -34,7 +34,7 @@ export default function UpdateAuthorForm({ setShowForm }) {
         console.log(authorkData)
         try {
             if(data.author_name === authorkData){
-                MyAlert.Alert('error', 'Không có thay đổi thông tin tác giả')
+                MyAlert.Alert('info', 'Không có thay đổi thông tin tác giả')
             }else{
                 const response = await UserRequest.put(`/collection/author/${book_id}`, data)
                 MyAlert.Alert(response.data.status, 'Cập nhật tên tác giả thành công')
