@@ -10,6 +10,7 @@ import Login from "./pages/LoginPage/Login.jsx";
 import { useSelector } from "react-redux";
 import FormUpdate from "./components/BookListComponent/UpdateBook/formUpdate.jsx";
 import ManageOrders from "./pages/OrdersPage/manageOrders.jsx";
+import DetailOrder from "./pages/DetailOrderPage/DetailOrder.jsx";
 function App() {
   const user = useSelector(state => state.currentUser)
   const ProtectedRoute = () => {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/" element={<AdminHome />} />
           <Route path="/update/:slug" element={<FormUpdate />} />
           <Route path="/manageOrders" element={<ManageOrders/>} />
+          <Route path="/manageOrders/:orderId" element={<DetailOrder/>} />
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/login" element={<Login />} />

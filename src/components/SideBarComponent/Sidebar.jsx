@@ -21,7 +21,7 @@ export default function Sidebar({ toggle, active }) {
 
   return (
     <div>
-      <div className={`bg-white h-screen transition-all ease-in-out duration-300 ${toggle ? ' ' : '-translate-x-full'} flex flex-col gap-72`}>
+      <div className={`bg-white h-[110vh] transition-all ease-in-out duration-300 ${toggle ? ' ' : '-translate-x-full'} flex flex-col gap-72`}>
         <ul className='pt-16 flex flex-col gap-6'>
           {sideBarArray.map((item, index) => (
             <Link to={item.route}   key={item.id} style={{ color: active === index ? 'dodgerblue' : '' }} className='flex items-center gap-4 ml-12 pt-5  cursor-pointer hover:text-[dodgerblue]'>
