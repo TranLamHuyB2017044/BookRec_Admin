@@ -15,7 +15,7 @@ export default function AdminHome() {
       <Navbar onToggleSidebar={handleToggleSidebar}/>
       <div className='grid grid-cols-5 h-fit'>
         <div className={`col-span-1 `}>
-          <Sidebar toggle={isSidebarOpen} active={active}/>
+          <Sidebar toggle={isSidebarOpen} active={active} />
         </div>
         <div className={`col-span-4 transition-all ease-in-out duration-300  flex flex-col justify-between ${isSidebarOpen ? ' ' : '-translate-x-[300px] mx-auto w-[98vw]'}`}>
           <div className='h-fit'>

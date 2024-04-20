@@ -1,11 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { UserRequest } from '../../service/Request'
+import myAlert from '../AlertComponent/Alert'
+import Swal from "sweetalert2";
+import { useSelector } from 'react-redux';
 
 export default function OrderForm() {
     const [showDropDown, setShowDropDown] = useState(false)
     const [order, setOrder] = useState()
     const params = useParams()
+    const user = useSelector(state => state.currentUser)
+    const [status, setStatus] = useState()
+    const navigate = useNavigate()
+
     useEffect(() => {
         const order_id = params.orderId
         const getOrderById = async () => {
@@ -38,6 +45,48 @@ export default function OrderForm() {
     }, [order]);
 
 
+    const handleUpdateStatus = (e) => {
+        const status = e.target.value
+        const orderId = params.orderId
+        const convert_status = status === 'accepted' ? 'đã thanh toán' : 'hủy đơn hàng'
+        const convert_status_to_uppercase = status === 'accepted' ? 'Đã thanh toán' : 'Hủy đơn hàng'
+        const convert_status_to_update = status === 'accepted' ? 'Đã thanh toán' : 'Đã hủy'
+        if(status === 'Chỉnh sửa'){
+            return false
+        }
+        myAlert.Confirm(convert_status_to_uppercase, 'question', 'Xác nhận '+ convert_status + ' cho đơn hàng này', 'Có', 'Thoát')
+            .then(async (result) => {
+                if (result.value) {
+                    const { value: password } = await Swal.fire({
+                        title: "Vui lòng nhập password của bạn để xác nhận " + convert_status ,
+                        input: "password",
+                        inputLabel: "Password",
+                        inputPlaceholder: "Enter your password",
+                        inputAttributes: {
+                            maxlength: "10",
+                            autocapitalize: "off",
+                            autocorrect: "off"
+                        }
+                    });
+                    if (password) {
+                        const response = await UserRequest.post('/user/login/admin', { email: user.email, password: password });
+                        if (response.status === 200) {
+                            await UserRequest.put(`/order/detail/${orderId}`, {status: convert_status_to_update})
+                            myAlert.Alert('success', 'Cập nhật trạng thái đơn hàng thành công')
+                            navigate('/manageOrders')
+                        } else {
+                            Swal.fire(`Sai mật khẩu`);
+                        }
+                    }
+
+                }
+            })
+            .catch(error => {
+                const errorMessage = error.response?.data || "An error occurred.";
+                myAlert.Alert("error", errorMessage);
+            });
+
+    }
     return (
         <div>
             <div className='flex justify-between gap-2 mt-16 ml-12 items-center'>
@@ -46,22 +95,13 @@ export default function OrderForm() {
                     <p>{order?.order_date.substring(0, order.order_date.indexOf('T'))}</p>
                 </div>
                 <div className='flex gap-8 '>
-                    <div className="relative inline-block text-left ">
-                        <div>
-                            <button onClick={() => setShowDropDown(!showDropDown)} type="button" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
-                                Chỉnh sửa
-                                <svg className="-mr-1 h-10 w-10 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                        {showDropDown && <div className="duration-300 absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" >
-                            <div className="py-1">
-                                <p className="text-gray-700 block px-4 py-4 cursor-pointer hover:bg-[#b5d0e8]" id="menu-item-0">Đã thanh toán</p>
-                                <p className="text-gray-700 block px-4 py-4 cursor-pointer hover:bg-[#b5d0e8]" id="menu-item-1">Hủy đơn hàng</p>
-                            </div>
-                        </div>}
-                    </div>
+                    {order?.payment_status === 'Chưa thanh toán' && <div className="relative inline-block text-left ">
+                        <select onChange={handleUpdateStatus} id="edit" className='px-2 py-3 rounded-md'>
+                            <option defaultChecked >Chỉnh sửa</option>
+                            <option value="accepted">Đã thanh toán</option>
+                            <option value="rejected">Hủy đơn hàng</option>
+                        </select>
+                    </div>}
                     <Link to='/manageOrders'
                         className='mr-20 active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-2 rounded-md 
                         border border-white bg-[dodgerblue] text-white flex items-center w-[120px] gap-2 justify-center'
@@ -87,7 +127,7 @@ export default function OrderForm() {
                     <div className='col-span-1'>
                         <h3 className='text-[#84a3be]'>Trạng thái thanh toán</h3>
                         <div className='mt-5 flex justify-between items-center '>
-                            <p className={order.payment_status === 'Chưa thanh toán' ? 'text-[dodgerblue] ' : order.payment_status === 'Đã thanh toán' ? 'text-green-500' : 'text-red-500'}>Chưa thanh toán</p>
+                            <p className={order.payment_status === 'Chưa thanh toán' ? 'text-[dodgerblue] ' : order.payment_status === 'Đã thanh toán' ? 'text-green-500' : 'text-red-500'}>{order.payment_status}</p>
 
                         </div>
                     </div>

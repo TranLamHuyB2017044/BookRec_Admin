@@ -3,10 +3,11 @@ import Navbar from '../../components/NavbarComponent/Navbar';
 import Sidebar from '../../components/SideBarComponent/Sidebar';
 import Footer from '../../components/FooterComponent/Footer';
 import OrderForm from '../../components/OrdersComponent/OrderForm';
+import { useParams } from 'react-router-dom';
 
 export default function DetailOrder() {
     const active = 2 
-
+    const orderId = useParams().orderId
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const handleToggleSidebar = () => {
       setIsSidebarOpen(!isSidebarOpen);
@@ -20,7 +21,7 @@ export default function DetailOrder() {
         </div>
         <div className={`col-span-4 transition-all ease-in-out duration-300  flex flex-col justify-between ${isSidebarOpen ? ' ' : '-translate-x-[300px] mx-auto w-[98vw]'}`}>
           <div className='h-fit'>
-            <h1 className='font-semibold text-5xl ml-16 mt-12'>Order #55679</h1>
+            <h1 className='font-semibold text-5xl ml-16 mt-12'>Order #{orderId}</h1>
             <OrderForm />
           </div>
           <div className='h-[80px]'><Footer/></div>

@@ -75,7 +75,9 @@ export default function Orders() {
             },
         },
     ];
-
+    const sortedOrders = orders.toSorted((a, b) => new Date(b.order_date) - new Date(a.order_date)); 
+    const confirmedOrder = orders.filter((orders) => orders.payment_status === 'Đã thanh toán')
+    const rejectedOrder = orders.filter((orders) => orders.payment_status === 'Đã hủy')
     return (
         <div className='flex flex-col mt-20'>
             <div className='flex px-32 items-center gap-8'>
@@ -85,7 +87,7 @@ export default function Orders() {
                     </div>
                     <div className='flex flex-col '>
                         <p className='text-md opacity-80'>Tất cả đơn</p>
-                        <h3 className='text-bold text-4xl'>200</h3>
+                        <h3 className='text-bold text-4xl'>{orders.length}</h3>
                     </div>
                 </div>
                 <div className='flex gap-4 border border-gray-300 cursor-pointer bg-white p-4 items-center rounded-2xl min-w-[180px]' >
@@ -94,7 +96,7 @@ export default function Orders() {
                     </div>
                     <div className='flex flex-col '>
                         <p className='text-md opacity-80'>Đã xác nhận</p>
-                        <h3 className='text-bold text-4xl'>200</h3>
+                        <h3 className='text-bold text-4xl'>{confirmedOrder.length}</h3>
                     </div>
                 </div>
                 <div className='flex gap-4 border border-gray-300 cursor-pointer bg-white p-4 items-center rounded-2xl min-w-[180px]'>
@@ -102,8 +104,8 @@ export default function Orders() {
                         <AssignmentOutlinedIcon fontSize='large' className='text-blue-500' />
                     </div>
                     <div className='flex flex-col '>
-                        <p className='text-md opacity-80'>Chưa xác nhận</p>
-                        <h3 className='text-bold text-4xl'>200</h3>
+                        <p className='text-md opacity-80'>Đã hủy</p>
+                        <h3 className='text-bold text-4xl'>{rejectedOrder.length}</h3>
                     </div>
                 </div>
             </div>
@@ -111,11 +113,11 @@ export default function Orders() {
                 <DataGrid initialState={{
                     pagination: {
                         paginationModel: {
-                            pageSize: 50,
+                            pageSize: 5,
                         },
                     },
                 }}
-                    pageSizeOptions={[50]} getRowId={(row) => row.order_id} style={{ fontSize: '1.5rem' }} rows={orders} columns={columns} className='bg-white' />
+                    pageSizeOptions={[5]} getRowId={(row) => row.order_id} style={{ fontSize: '1.5rem' }} rows={sortedOrders} columns={columns} className='bg-white' />
 
             </div>
 

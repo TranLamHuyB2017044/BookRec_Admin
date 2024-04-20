@@ -168,7 +168,7 @@ export default function Booklist({isSidebarOpen}) {
                 </div>
             </div>
             {showToggle === true  ? (
-                <FormBook handleOutToogle={handleOutToogle} />
+                <FormBook  handleOutToogle={handleOutToogle} />
             ) :
                 <div style={{ height: 440, width: '100%'}} className=' mt-12 px-16 '>
                     <DataGrid initialState={{

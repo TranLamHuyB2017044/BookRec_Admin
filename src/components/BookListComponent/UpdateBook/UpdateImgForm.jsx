@@ -5,20 +5,11 @@ import { useForm } from "react-hook-form";
 import myAlert from '../../AlertComponent/Alert'
 import Loading from '../../LoadingComponent/Loading';
 export default function UpdateImgForm({ setShowForm }) {
-  const [ImageData, setImageData] = useState({})
-  const [image, setImage] = useState(ImageData.thumbnail_url)
+  const [ImageData, setImageData] = useState()
   const params = useParams()
   const book_id = params.slug
   const [loading, setLoading] = useState(false)
-
   const { register, handleSubmit } = useForm({})
-
-  const moreImg = [
-    { id: 1, url: ImageData.thumbnail_url },
-    { id: 2, url: ImageData.cover_url_1 },
-    { id: 3, url: ImageData.cover_url_2 },
-    { id: 4, url: ImageData.cover_url_3 },
-  ]
 
   useEffect(() => {
     const getImageData = async () => {
@@ -28,8 +19,26 @@ export default function UpdateImgForm({ setShowForm }) {
     getImageData()
   }, [book_id])
 
-  const handleChangeImage = (url) => {
-    setImage(url)
+
+  const moreImg = [
+    { id: 1, url: ImageData?.thumbnail_url },
+    { id: 2, url: ImageData?.cover_url_1 },
+    { id: 3, url: ImageData?.cover_url_2 },
+    { id: 4, url: ImageData?.cover_url_3 },
+  ]
+
+
+  const [thumbnail, setThumbnail] = useState(() =>{
+
+    const fileType = ImageData?.thumbnail_url.split('.').pop().toLowerCase();
+    const type = fileType === 'mp4' || fileType === 'mov' ? 0 : 1;
+    return {
+          url: ImageData?.thumbnail_url,
+          type: type
+    }
+  })
+  const handleChangeImage = (url, type) => {
+    setThumbnail({ url: url, type: type })
   }
 
   const onSubmit = async (data) => {
@@ -62,21 +71,44 @@ export default function UpdateImgForm({ setShowForm }) {
     }
   }
 
+
+  const [media, setMedia] = useState()
+
+  useEffect(() => {
+    const result = moreImg?.map(item => {
+      const fileType = item.url?.split('.').pop().toLowerCase();
+      const type = fileType === 'mp4' || fileType === 'mov' ? 0 : 1;
+      return { id: item.id, url: item?.url, type };
+    });
+
+    setMedia(result)
+  }, [ImageData])
+
+
+
   return (
     <div>
       <h1 className='text-center text-5xl font-semibold'>Thay đổi hình ảnh về sách</h1>
       {loading ? <Loading /> : <div>
         <p className='my-12'>Hình ảnh hiện tại</p>
         <div className='flex flex-col gap-8'>
-          <img className='w-[200px] h-[200px]' src={image || ImageData.thumbnail_url} alt="thumbnail_book" />
+          {thumbnail.type === 1 ?
+            (<img className='w-[200px] h-[200px]' src={thumbnail.url ?? ImageData?.thumbnail_url } alt="thumbnail_book" />)
+            :
+            (<video className={`cursor-pointer p-2 w-[350px] h-[250px]`} controls>
+              <source src={thumbnail.url} type="video/mp4" />
+            </video>)
+          }
           <div className='flex justify-between my-4 mx-auto gap-4'>
-            {moreImg.map((img) => (
-              <div key={img.id} className='border-[1px] border-[dodgerblue] rounded-sm p-1 gap-2 cursor-pointer'>
-                <button type='button' onClick={() => handleChangeImage(img.url)} >
-                  <img loading='lazy' className=' p-2 w-[100px] h-[100px]' src={img.url} alt={`more-img-${img.id}`} />
-                </button>
-              </div>))
-            }
+            {media?.map((item, id) => (
+              <div key={id} className='border-[1px] border-[dodgerblue] rounded-sm p-1 gap-2 cursor-pointer'>
+                {item.type === 1 ? (
+                  <img onClick={() => handleChangeImage(item?.url, 1)} className='cursor-pointer p-2 w-[100px] h-[100px] ' src={item?.url} alt={`img_rating_${id + 1}`} />
+                ) : <video onClick={() => handleChangeImage(item?.url, 0)} className={`cursor-pointer p-2 w-[100px] h-[100px]`}>
+                  <source src={item?.url} type="video/mp4" />
+                </video>}
+              </div>
+            ))}
           </div>
         </div>
         <div className='mt-8'>
