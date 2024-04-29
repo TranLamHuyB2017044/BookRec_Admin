@@ -6,11 +6,9 @@ import Swal from "sweetalert2";
 import { useSelector } from 'react-redux';
 
 export default function OrderForm() {
-    const [showDropDown, setShowDropDown] = useState(false)
     const [order, setOrder] = useState()
     const params = useParams()
     const user = useSelector(state => state.currentUser)
-    const [status, setStatus] = useState()
     const navigate = useNavigate()
 
     useEffect(() => {

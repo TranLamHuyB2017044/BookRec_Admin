@@ -7,7 +7,7 @@ import { UserRequest } from '../../service/Request';
 import { Link } from 'react-router-dom';
 
 
-export default function Orders() {
+export default function Orders({isSidebarOpen}) {
     const [orders, setOrders] = useState([])
     useEffect(() => {
         const getAllOrders = async () => {
@@ -75,13 +75,16 @@ export default function Orders() {
             },
         },
     ];
+
+    const order_statistic_list_class = 'flex gap-4 border border-gray-300 cursor-pointer bg-white p-4 items-center rounded-2xl min-w-[180px]'
+    const order_statistic_list_full_class = 'flex gap-4 border border-gray-300 cursor-pointer bg-white p-4 items-center rounded-2xl min-w-[250px]'
     const sortedOrders = orders.toSorted((a, b) => new Date(b.order_date) - new Date(a.order_date)); 
     const confirmedOrder = orders.filter((orders) => orders.payment_status === 'Đã thanh toán')
     const rejectedOrder = orders.filter((orders) => orders.payment_status === 'Đã hủy')
     return (
         <div className='flex flex-col mt-20'>
-            <div className='flex px-32 items-center gap-8'>
-                <div className='flex gap-4 border border-gray-300 cursor-pointer bg-white p-4 items-center rounded-2xl min-w-[180px]'>
+            <div className={isSidebarOpen ===true ? 'flex px-32 items-center gap-8' : 'flex px-3 ml-[250px] items-center gap-8'}>
+                <div className={ isSidebarOpen === true ? order_statistic_list_class : order_statistic_list_full_class}>
                     <div className='border p-3 bg-purple-200 rounded-xl'>
                         <WidgetsOutlinedIcon fontSize='large' className=' text-purple-500' />
                     </div>
@@ -90,7 +93,7 @@ export default function Orders() {
                         <h3 className='text-bold text-4xl'>{orders.length}</h3>
                     </div>
                 </div>
-                <div className='flex gap-4 border border-gray-300 cursor-pointer bg-white p-4 items-center rounded-2xl min-w-[180px]' >
+                <div className={ isSidebarOpen === true ? order_statistic_list_class : order_statistic_list_full_class} >
                     <div className='border p-3 bg-green-200 rounded-xl'>
                         <AssignmentTurnedInOutlinedIcon fontSize='large' className='text-green-600' />
                     </div>
@@ -99,7 +102,7 @@ export default function Orders() {
                         <h3 className='text-bold text-4xl'>{confirmedOrder.length}</h3>
                     </div>
                 </div>
-                <div className='flex gap-4 border border-gray-300 cursor-pointer bg-white p-4 items-center rounded-2xl min-w-[180px]'>
+                <div className={ isSidebarOpen === true ? order_statistic_list_class : order_statistic_list_full_class}>
                     <div className='border p-3 bg-blue-200 rounded-xl'>
                         <AssignmentOutlinedIcon fontSize='large' className='text-blue-500' />
                     </div>
@@ -109,7 +112,7 @@ export default function Orders() {
                     </div>
                 </div>
             </div>
-            <div className='mt-20 px-32 w-fit'>
+            <div className={isSidebarOpen === true ? 'mt-20 px-32 w-fit' : 'mt-20 px-32 ml-[180px] w-fit'}>
                 <DataGrid initialState={{
                     pagination: {
                         paginationModel: {

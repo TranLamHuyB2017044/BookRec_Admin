@@ -37,6 +37,7 @@ export default function UpdateImgForm({ setShowForm }) {
           type: type
     }
   })
+
   const handleChangeImage = (url, type) => {
     setThumbnail({ url: url, type: type })
   }
@@ -103,7 +104,7 @@ export default function UpdateImgForm({ setShowForm }) {
             {media?.map((item, id) => (
               <div key={id} className='border-[1px] border-[dodgerblue] rounded-sm p-1 gap-2 cursor-pointer'>
                 {item.type === 1 ? (
-                  <img onClick={() => handleChangeImage(item?.url, 1)} className='cursor-pointer p-2 w-[100px] h-[100px] ' src={item?.url} alt={`img_rating_${id + 1}`} />
+                  <img onClick={() => handleChangeImage(item?.url, 1)} className='cursor-pointer p-2 w-[100px] h-[100px] ' src={item?.url} alt={`cover_img_${id + 1}`} />
                 ) : <video onClick={() => handleChangeImage(item?.url, 0)} className={`cursor-pointer p-2 w-[100px] h-[100px]`}>
                   <source src={item?.url} type="video/mp4" />
                 </video>}
