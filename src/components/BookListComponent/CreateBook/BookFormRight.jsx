@@ -4,7 +4,7 @@ export default function BookFormRight({onChange, errors, register}) {
     return (
         <div className='form-right'>
             <div className='form-group  flex gap-2 my-6'>
-                <label className='min-w-[130px] ' htmlFor="original_price">Giá bán</label>
+                <label className='min-w-[150px] ' htmlFor="original_price">Giá bán (*)</label>
                 <div className=''>
 
                     <input
@@ -19,7 +19,7 @@ export default function BookFormRight({onChange, errors, register}) {
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
-                <label className='min-w-[130px] ' htmlFor="inStock">Số lượng tồn kho</label>
+                <label className='min-w-[150px] ' htmlFor="inStock">Số lượng tồn kho (*)</label>
                 <div className=''>
 
                     <input
@@ -34,7 +34,7 @@ export default function BookFormRight({onChange, errors, register}) {
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
-                <label className='min-w-[130px] ' htmlFor="quantity_sold">Số lượng đã bán</label>
+                <label className='min-w-[150px] ' htmlFor="quantity_sold">Số lượng đã bán (*)</label>
                 <div className=''>
 
                     <input
@@ -50,7 +50,7 @@ export default function BookFormRight({onChange, errors, register}) {
             </div>
 
             <div className='form-group  flex gap-2 my-6'>
-                <label className='min-w-[130px] ' htmlFor="pages">Tổng số trang</label>
+                <label className='min-w-[150px] ' htmlFor="pages">Tổng số trang (*)</label>
                 <div className=''>
 
                     <input
@@ -65,7 +65,7 @@ export default function BookFormRight({onChange, errors, register}) {
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
-                <label className='min-w-[130px] ' htmlFor="discount">Tỉ lệ giảm</label>
+                <label className='min-w-[150px] ' htmlFor="discount">Tỉ lệ giảm (*)</label>
                 <div className=''>
 
                     <input

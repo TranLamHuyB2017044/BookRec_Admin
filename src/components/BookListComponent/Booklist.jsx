@@ -154,10 +154,9 @@ export default function Booklist({isSidebarOpen}) {
         <div className='bg-[#e3e7f1] '>
             <div className='flex items-center justify-between px-40 mt-10'>
                 <div className='flex gap-4'>
-                    <button  onClick={() => setShowToggle(true)} 
-                        className='active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-2 rounded-md 
-                        border border-white bg-[dodgerblue] text-white flex items-center w-[120px] gap-2 justify-center'
-                    ><AddIcon />Nhập sách</button>
+                    {showToggle === false && <button  onClick={() => setShowToggle(true)} 
+                        className={'active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-2 rounded-md border border-white bg-[dodgerblue] text-white flex items-center w-[120px] gap-2 justify-center'}
+                    ><AddIcon />Nhập sách</button>}
                 </div>
 
                 <div style={showToggle ? {display: 'none'} : {display: 'flex'}} className='flex items-center gap-2 relative' >

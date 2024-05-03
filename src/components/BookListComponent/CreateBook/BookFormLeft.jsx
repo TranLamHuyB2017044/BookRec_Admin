@@ -4,7 +4,7 @@ export default function BookFormLeft({onChange, errors, register}) {
     return (
         <div className='form-left'>
             <div className='form-group  flex gap-2 my-6'>
-                <label className='min-w-[130px] ' htmlFor="title">Tiêu đề sách</label>
+                <label className='min-w-[150px] ' htmlFor="title">Tiêu đề sách (*)</label>
                 <div className=''>
                     <input
                         className='w-[250px] rounded-md h-[35px] pl-2 border border-black'
@@ -18,7 +18,7 @@ export default function BookFormLeft({onChange, errors, register}) {
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
-                <label className='min-w-[130px] ' htmlFor="short_description">Tóm tắt nội dung</label>
+                <label className='min-w-[150px] ' htmlFor="short_description">Tóm tắt nội dung (*)</label>
                 <div className=''>
 
                     <textarea
@@ -32,7 +32,7 @@ export default function BookFormLeft({onChange, errors, register}) {
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
-                <label className='min-w-[130px] ' htmlFor="category">Thể loại</label>
+                <label className='min-w-[150px] ' htmlFor="category">Thể loại (*)</label>
                 <div className=''>
 
                     <input
@@ -47,7 +47,7 @@ export default function BookFormLeft({onChange, errors, register}) {
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
-                <label className='min-w-[130px] ' htmlFor="publication_date">Ngày xuất bản</label>
+                <label className='min-w-[150px] ' htmlFor="publication_date">Ngày xuất bản (*)</label>
                 <div className=''>
 
                     <input
@@ -62,7 +62,7 @@ export default function BookFormLeft({onChange, errors, register}) {
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
-                <label className='min-w-[130px] ' htmlFor="avg_rating">Số sao đánh giá</label>
+                <label className='min-w-[150px] ' htmlFor="avg_rating">Số sao đánh giá (*)</label>
                 <div className=''>
 
                     <input
@@ -77,7 +77,7 @@ export default function BookFormLeft({onChange, errors, register}) {
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
-                <label className='min-w-[130px] ' htmlFor="coverBooks">Hình ảnh về sách</label>
+                <label className='min-w-[150px] ' htmlFor="coverBooks">Hình ảnh về sách (*)</label>
                 <div className=''>
 
                     <input

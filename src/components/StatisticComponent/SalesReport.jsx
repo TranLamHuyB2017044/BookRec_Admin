@@ -1,53 +1,104 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { useState } from 'react';
-import { useEffect } from 'react';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
+import { UserRequest } from '../../service/Request'
+
 export default function SalesReport({ isSidebarOpen }) {
-    const [SalesData, setSalesData] = useState([])
-    const [typeStatistics, setTypeStatistics] = useState(false)
-    const [chooseTypeStatistics, setChooseTypeStatistics] = useState(false)
+    const [chooseTypeStatisticsOrder, setChooseTypeStatisticsOrder] = useState(false)
+    const [chooseTypeStatisticsRevenue, setChooseTypeStatisticsRevenue] = useState(false)
+    const [ordersType, setOrdersType] = useState('Hôm nay')
+    const [revenueType, setRevenueType] = useState('Hôm nay')
+    const [statisticsOrder, setStatisticsOrder] = useState()
+    const [statisticsRevenue, setStatisticsRevenue] = useState()
+    const [numUsers, setNumUsers] = useState()
     
-    // useEffect(() => {
-    //     const getSalesData = async () => {
-    //         const rs = await UserRequest.get('/')
-    //     }
-    // }, [])
+    useEffect(() => {
+        const getSalesData = async () => {
+            try {
+                let orderRS = {}
+                let revenueRS = {}
+                if (ordersType === 'Hôm nay' && revenueType === 'Tháng này') {
+                    orderRS = await UserRequest.get(`/order/statistics/day`)
+                    revenueRS = await UserRequest.get(`/order/statistics/month`)
+                    setStatisticsOrder(orderRS.data.tong_so_don)
+                    setStatisticsRevenue(revenueRS.data.tong_gia_tien)
+                } else if (ordersType === 'Tháng này' && revenueType === 'Hôm nay') {
+                    orderRS = await UserRequest.get(`/order/statistics/month`)
+                    revenueRS = await UserRequest.get(`/order/statistics/day`)
+                    setStatisticsOrder(orderRS.data.tong_so_don)
+                    setStatisticsRevenue(revenueRS.data.tong_gia_tien)
+                } else if (ordersType && revenueType === 'Hôm nay') {
+                    orderRS = await UserRequest.get(`/order/statistics/day`)
+                    revenueRS = await UserRequest.get(`/order/statistics/day`)
+                    setStatisticsOrder(orderRS.data.tong_so_don)
+                    setStatisticsRevenue(revenueRS.data.tong_gia_tien)
+                }else {
+                    orderRS = await UserRequest.get(`/order/statistics/month`)
+                    revenueRS = await UserRequest.get(`/order/statistics/month`)
+                    setStatisticsOrder(orderRS.data.tong_so_don)
+                    setStatisticsRevenue(revenueRS.data.tong_gia_tien)
+                }
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+        getSalesData()
+    }, [ordersType, revenueType])
+    useEffect(() => {
+        const countNumUsers = async () => {
+            const userList = await UserRequest.get('/user')
+            setNumUsers(userList.data.length)
+        }
+        countNumUsers()
+    }, [])
+
+    const handleSetValue = (type, option) => {
+        if (type === 'revenueType') {
+            setRevenueType(option)
+            setChooseTypeStatisticsRevenue(false)
+        } else {
+            setOrdersType(option)
+            setChooseTypeStatisticsOrder(false)
+        }
+    }
+
+
     return (
         <div className={isSidebarOpen === false ? 'flex justify-start gap-10 mt-16 ml-16 ' : `flex justify-start gap-10 mt-16 ml-8`}>
             <div className={isSidebarOpen === false ? 'border-[1px] bg-white px-6 py-5 w-[300px] h-[150px] rounded-2xl' : 'border-[1px] bg-white px-6 py-5 w-[250px] h-[150px] rounded-2xl'}>
                 <div className='flex justify-between items-center relative'>
                     <div className='flex items-center gap-2'>
                         <h3 className='text-3xl text-blue-500'>Đơn hàng |</h3>
-                        <p className='text-gray-500 text-2xl mt-1 opacity-80'>Hôm nay</p>
+                        <p className='text-gray-500 text-2xl mt-1 opacity-80'>{ordersType}</p>
                     </div>
-                    <button  onClick={() => setChooseTypeStatistics(!chooseTypeStatistics)}>...</button>
-                    {chooseTypeStatistics && <ul className='w-[150px]  bg-white border-[1px] absolute top-12 right-0 '>
-                        <p className='py-2 pl-4 cursor-pointer hover:bg-[#e6d8d8]'>Hôm nay</p>
-                        <p className='py-2 pl-4 cursor-pointer hover:bg-[#e6d8d8]'>Tháng này</p>
+                    <button onClick={() => setChooseTypeStatisticsOrder(!chooseTypeStatisticsOrder)}>...</button>
+                    {chooseTypeStatisticsOrder && <ul className='w-[150px]  bg-white border-[1px] absolute top-12 right-0 '>
+                        <button onClick={() => handleSetValue('orderType', 'Hôm nay')} className='py-2 text-start pl-4 w-full cursor-pointer hover:bg-[#e6d8d8]'>Hôm nay</button>
+                        <button onClick={() => handleSetValue('orderType', 'Tháng này')} className='py-2 text-start pl-4 w-full cursor-pointer hover:bg-[#e6d8d8]'>Tháng này</button>
                     </ul>}
                 </div>
                 <div className='mt-8 flex justify-start gap-8 items-center'>
                     <div className='px-5 py-2 rounded-full bg-slate-100 w-fit text-[40px]'><ShoppingCartOutlinedIcon className='text-[#5e65e2]' fontSize='inherit' /></div>
-                    <h3 className='text-4xl text-blue-500'>145 đơn</h3>
+                    <h3 className='text-4xl text-blue-500'>{statisticsOrder} đơn</h3>
                 </div>
             </div>
             <div className={isSidebarOpen === false ? 'border-[1px] bg-white px-6 py-5 w-[300px] h-[150px] rounded-2xl' : 'border-[1px] bg-white px-6 py-5 w-[250px] h-[150px] rounded-2xl'}>
-                <div className='flex justify-between items-center'>
+                <div className='flex justify-between items-center relative'>
                     <div className='flex items-center gap-2'>
                         <h3 className='text-3xl text-blue-500'>Doanh thu |</h3>
-                        <p className='text-gray-500 text-2xl mt-1 opacity-80'>Hôm nay</p>
+                        <p className='text-gray-500 text-2xl mt-1 opacity-80'>{revenueType}</p>
                     </div>
-                    <button  onClick={() => setChooseTypeStatistics(!chooseTypeStatistics)}>...</button>
-                    {chooseTypeStatistics && <ul className='w-[150px]  bg-white border-[1px] absolute top-12 right-0 '>
-                        <p className='py-2 pl-4 cursor-pointer hover:bg-[#e6d8d8]'>Hôm nay</p>
-                        <p className='py-2 pl-4 cursor-pointer hover:bg-[#e6d8d8]'>Tháng này</p>
+                    <button onClick={() => setChooseTypeStatisticsRevenue(!chooseTypeStatisticsRevenue)}>...</button>
+                    {chooseTypeStatisticsRevenue && <ul className='w-[150px]  bg-white border-[1px] absolute top-12 right-0 '>
+                        <button onClick={() => handleSetValue('revenueType', 'Hôm nay')} className='py-2 text-start pl-4 w-full cursor-pointer hover:bg-[#e6d8d8]'>Hôm nay</button>
+                        <button onClick={() => handleSetValue('revenueType', 'Tháng này')} className='py-2 text-start pl-4 w-full cursor-pointer hover:bg-[#e6d8d8]'>Tháng này</button>
                     </ul>}
                 </div>
                 <div className='mt-8 flex justify-start gap-8 items-center'>
                     <div className='px-5 pt-1 pb-2 rounded-full bg-[#e2fde3] w-fit text-[40px]'><MonetizationOnOutlinedIcon className='text-[#41c048]' fontSize='inherit' /></div>
-                    <h3 className='text-4xl text-blue-500'>145 vnđ</h3>
+                    <h3 className='text-4xl text-blue-500'>{(parseInt(statisticsRevenue))?.toLocaleString()} vnđ</h3>
                 </div>
             </div>
             <div className={isSidebarOpen === false ? 'border-[1px] bg-white px-6 py-5 w-[300px] h-[150px] rounded-2xl' : 'border-[1px] bg-white px-6 py-5 w-[250px] h-[150px] rounded-2xl'}>
@@ -60,7 +111,7 @@ export default function SalesReport({ isSidebarOpen }) {
                 </div>
                 <div className='mt-8 flex justify-start gap-8 items-center'>
                     <div className='px-5 py-2 rounded-full bg-[#f3e2de] w-fit text-[40px]'><PeopleAltOutlinedIcon className='text-[#df7965]' fontSize='inherit' /></div>
-                    <h3 className='text-4xl text-blue-500'>145</h3>
+                    <h3 className='text-4xl text-blue-500'>{numUsers}</h3>
                 </div>
             </div>
         </div>

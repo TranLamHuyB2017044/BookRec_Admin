@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import { UserRequest } from '../../service/Request';
 
-export default function UserLists() {
+export default function UserLists({isSidebarOpen}) {
     const [userList, setUserList] = useState([])
 
     useEffect(() => {
         const getAllUser = async () => {
             const rs = await UserRequest.get('/user/')
-            setUserList(rs.data)
+            const NewuserList = rs.data
+            setUserList(NewuserList.reverse())
         }
         getAllUser()
     }, [])
@@ -65,7 +66,7 @@ export default function UserLists() {
 
     return (
         <div>
-            <div className='mt-20 px-32 w-fit'>
+            <div className={isSidebarOpen ? 'mt-20 px-32 w-fit' : 'mt-20 mx-auto px-32 w-fit'}>
                 <DataGrid initialState={{
                     pagination: {
                         paginationModel: {

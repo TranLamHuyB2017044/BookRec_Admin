@@ -45,14 +45,14 @@ export default function UpdateAuthorForm({ setShowForm }) {
         }
     }
     return (
-        <div>
+        <div className='mt-[60px] mb-[9rem]'>
             <form action="#" onSubmit={handleSubmit(onSubmit)}>
                 <div className='author-form'>
                     <h1 className="mb-2 py-2 mx-auto text-3xl text-justify border-b border-blue-500 font-bold">
                        Thay đổi thông tin tác giả
                     </h1>
                     <div className='form-group  flex gap-2 my-6'>
-                        <label className='min-w-[130px] ' htmlFor="author_name">Tên tác giả</label>
+                        <label className='min-w-[130px] ' htmlFor="author_name">Tên tác giả (*)</label>
                         <div className=''>
                             <input
                                 className='w-[250px] rounded-md h-[35px] pl-2 border border-black'

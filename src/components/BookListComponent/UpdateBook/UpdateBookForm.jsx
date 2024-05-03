@@ -12,6 +12,7 @@ export default function UpdateBookForm({ setShowForm }) {
     const params = useParams()
     const book_id = params.slug
     const [loadind, setLoading] = useState(false)
+    
     useEffect(() => {
         const getDataBook = async () => {
             try {

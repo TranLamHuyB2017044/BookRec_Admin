@@ -42,10 +42,10 @@ export default function FormUpdate() {
                     <Sidebar toggle={isSidebarOpen} />
                 </div>
                 <div className={`col-span-4 transition-all ease-in-out duration-300  flex flex-col justify-between ${isSidebarOpen ? ' ' : '-translate-x-[300px] mx-auto w-[98vw]'}`}>
-                    <div className='h-fit'>
+                    <div className='h-fit mb-[26rem]'>
                         <h1 className='font-semibold text-5xl ml-16 my-5'>Kiểm kho</h1>
                         <div className='flex flex-col justify-center items-center'>
-                            {showForm === false ? (<>
+                            {showForm === false ? (<div className='mt-[60px]'>
                                 <h2 className='text-center text-5xl'>Chỉnh sửa sách</h2>
                                 <p className='text-center my-5 '>Chọn một trong các thông tin mà bạn muốn chỉnh sửa</p>
                                 <div className='flex flex-wrap justify-center gap-8 mt-12'>
@@ -60,7 +60,7 @@ export default function FormUpdate() {
                                         <button onClick={() => handleShowFrom('ImgInfo')} className='border p-12 border-[dodgerblue] bg-white font-semibold text-3xl  min-w-[300px]'>Chỉnh sửa hình ảnh</button>
                                     </div>
                                 </div>
-                            </>)
+                            </div>)
                                 :
                                 <section>
                                     {showBookInfo && <UpdateBookForm setShowForm={() => setShowForm(false)} />}
@@ -70,7 +70,7 @@ export default function FormUpdate() {
                             <Link to='/' style={{ display: showForm ? 'none' : 'block' }} className='mt-16 max-w-[100px] bg-[dodgerblue] hover:bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-10 py-2 rounded-md ' >Trở về</Link>
                         </div>
                     </div>
-                    <div className='h-[80px]'><Footer /></div>
+                    <Footer />
                 </div>
             </div>
         </div>

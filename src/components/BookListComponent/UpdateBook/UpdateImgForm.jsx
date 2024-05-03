@@ -88,7 +88,7 @@ export default function UpdateImgForm({ setShowForm }) {
 
 
   return (
-    <div>
+    <div className='mt-[60px]'>
       <h1 className='text-center text-5xl font-semibold'>Thay đổi hình ảnh về sách</h1>
       {loading ? <Loading /> : <div>
         <p className='my-12'>Hình ảnh hiện tại</p>

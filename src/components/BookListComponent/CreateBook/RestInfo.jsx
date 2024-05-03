@@ -8,7 +8,7 @@ export default function RestInfo({onChange, errors, register}) {
                     Nhập thông tin tác giả
                 </h1>
                 <div className='form-group  flex gap-2 my-6'>
-                    <label className='min-w-[130px] ' htmlFor="author_name">Tên tác giả</label>
+                    <label className='min-w-[150px] ' htmlFor="author_name">Tên tác giả (*)</label>
                     <div className=''>
                         <input
                             className='w-[250px] rounded-md h-[35px] pl-2 border border-black'
@@ -27,7 +27,7 @@ export default function RestInfo({onChange, errors, register}) {
                     Nhập thông tin nhà xuất bản
                 </h1>
                 <div className='form-group  flex gap-2 my-6'>
-                    <label className='min-w-[130px] ' htmlFor="manufacturer_name">Tên nhà xuất bản</label>
+                    <label className='min-w-[150px] ' htmlFor="manufacturer_name">Tên nhà xuất bản (*)</label>
                     <div className=''>
                         <input
                             className='w-[250px] rounded-md h-[35px] pl-2 border border-black'
@@ -46,7 +46,7 @@ export default function RestInfo({onChange, errors, register}) {
                     Nhập thông tin nhà cung cấp
                 </h1>
                 <div className='form-group  flex gap-2 my-6'>
-                    <label className='min-w-[130px] ' htmlFor="publisher_name">Tên nhà cung cấp</label>
+                    <label className='min-w-[150px] ' htmlFor="publisher_name">Tên nhà cung cấp (*)</label>
                     <div className=''>
 
                         <input
