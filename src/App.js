@@ -13,6 +13,9 @@ import ManageOrders from "./pages/OrdersPage/manageOrders.jsx";
 import DetailOrder from "./pages/DetailOrderPage/DetailOrder.jsx";
 import UserList from "./pages/ManageUsersPage/UserList.jsx";
 import Statistic from "./pages/StatisticsPage/Statistic.jsx";
+import FormBook from "./pages/PurchaseBookPage/NewBook.jsx";
+import ExistBook from "./pages/PurchaseBookPage/ExistBook.jsx";
+import CheckForm from "./pages/PurchaseBookPage/CheckForm.jsx";
 function App() {
   const user = useSelector(state => state.currentUser)
   const ProtectedRoute = () => {
@@ -32,6 +35,9 @@ function App() {
       <Routes>
         <Route element={<ProtectedUser />}>
           <Route path="/" element={<AdminHome />} />
+          <Route path="/check" element={<CheckForm />} />
+          <Route path="/create" element={<FormBook />} />
+          <Route path="/create/exist/:slug" element={<ExistBook />} />
           <Route path="/update/:slug" element={<FormUpdate />} />
           <Route path="/manageOrders" element={<ManageOrders/>} />
           <Route path="/manageOrders/:orderId" element={<DetailOrder/>} />

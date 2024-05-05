@@ -13,7 +13,7 @@ export default function DetailOrder() {
       setIsSidebarOpen(!isSidebarOpen);
     };
   return (
-    <div className='mb-[60px]'>
+    <div>
       <Navbar onToggleSidebar={handleToggleSidebar}/>
       <div className='grid grid-cols-5 h-fit'>
         <div className={`col-span-1 `}>

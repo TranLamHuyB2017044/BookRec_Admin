@@ -17,15 +17,6 @@ export default function UserLists({isSidebarOpen}) {
 
     const columns = [
         {
-            field: 'UserId', headerName: 'Mã Khách hàng', width: 150, renderCell: (params) => {
-                return (
-                    <div >
-                    {params.row.user_id}
-                    </div>
-                );
-            },
-        },
-        {
             field: 'fullname', headerName: 'Tên khách hàng', width: 200, renderCell: (params) => {
                 return (
                     <div>
@@ -57,6 +48,24 @@ export default function UserLists({isSidebarOpen}) {
                 return (
                     <div>
                     {params.row.created_at.substring(0, params.row.created_at.indexOf('T'))}
+                    </div>
+                );
+            },
+        },
+        {
+            field: 'num_join', headerName: 'Số đơn hàng đã đặt', width: 170, renderCell: (params) => {
+                return (
+                    <div>
+                    {params.row.num_orders} đơn hàng
+                    </div>
+                );
+            },
+        },
+        {
+            field: 'total_amount', headerName: 'Số tiền đã mua (vnđ)', width: 170, renderCell: (params) => {
+                return (
+                    <div>
+                    {params.row.total_amount > 0 ? parseInt(params.row.total_amount).toLocaleString() : 0} 
                     </div>
                 );
             },

@@ -42,7 +42,7 @@ export default function Sidebar({ toggle, active }) {
         </ul>
         <div className='flex flex-col gap-12 ml-4'>
           <div className='flex items-center text-3xl gap-4 ml-12 cursor-pointer hover:text-[dodgerblue]'>
-            <img className='rounded-full w-[45px] h-[45px]' src={Avatar} alt="user-ava" />
+            <img className='rounded-full w-[45px] h-[45px]' src={user.user_ava} alt="user-ava" />
             <p>{user.fullname}</p>
           </div>
           <div className='flex items-center text-3xl gap-4 ml-16 cursor-pointer hover:text-[dodgerblue]'>

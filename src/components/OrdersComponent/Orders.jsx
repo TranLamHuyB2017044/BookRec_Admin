@@ -98,7 +98,7 @@ export default function Orders({isSidebarOpen}) {
                         <AssignmentTurnedInOutlinedIcon fontSize='large' className='text-green-600' />
                     </div>
                     <div className='flex flex-col '>
-                        <p className='text-md opacity-80'>Đã xác nhận</p>
+                        <p className='text-md opacity-80'>Đã thanh toán</p>
                         <h3 className='text-bold text-4xl'>{confirmedOrder.length}</h3>
                     </div>
                 </div>

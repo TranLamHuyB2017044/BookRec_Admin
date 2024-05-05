@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { Line } from 'react-chartjs-2';
-// import { OrderData, RevenueData } from '../../data';
 import { useState } from 'react';
 import { Chart as ChartJs } from 'chart.js/auto';
 import {UserRequest} from '../../service/Request'

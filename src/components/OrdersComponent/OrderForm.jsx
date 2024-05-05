@@ -86,7 +86,7 @@ export default function OrderForm() {
 
     }
     return (
-        <div>
+        <div  className='mb-[60px]'>
             <div className='flex justify-between gap-2 mt-16 ml-12 items-center'>
                 <div className='flex gap-2'>
                     <p className='text-[#5c6871]'>Thời gian đặt</p>
@@ -131,7 +131,7 @@ export default function OrderForm() {
                     </div>
                 </section>
             ))}
-            <section className='grid grid-cols-5 border-[1px] bg-white my-5 w-[95%] mx-auto p-10 rounded-xl'>
+            <section className='grid grid-cols-5 border-[1px] bg-white my-5 w-[95%] mx-auto p-10 rounded-xl '>
                 <div className='col-span-1'>
                     <h3 className='text-[#84a3be] my-6'>Địa chỉ</h3>
                     <p className='mt-5'>{order?.address}</p>

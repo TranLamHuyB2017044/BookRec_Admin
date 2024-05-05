@@ -2,14 +2,22 @@ import React, { useState } from 'react'
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import { PublicRequest } from '../../../service/Request'
-import MyAlert from '../../AlertComponent/Alert'
-import Loading from '../../LoadingComponent/Loading'
-import BookFormLeft from './BookFormLeft';
-import BookFormRight from './BookFormRight';
-import RestInfo from './RestInfo';
-export default function FormBook({ handleOutToogle }) {
+import { PublicRequest } from '../../service/Request'
+import MyAlert from '../../components/AlertComponent/Alert'
+import Footer from '../../components/FooterComponent/Footer';
+import FormCreate from '../../components/BookListComponent/CreateBook/FormCreate';
+import Navbar from '../../components/NavbarComponent/Navbar';
+import Sidebar from '../../components/SideBarComponent/Sidebar';
+import { useNavigate } from 'react-router-dom';
+export default function NewBook() {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const active = 0
     const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
+    const handleToggleSidebar = () => {
+      setIsSidebarOpen(!isSidebarOpen);
+    };
+
     const [bookInfo, setBookInfo] = useState({
         title: '',
         short_description: '',
@@ -87,7 +95,7 @@ export default function FormBook({ handleOutToogle }) {
                 await PublicRequest.post('/collection/', formData)
                 MyAlert.Alert('success', 'Nhập thông tin sách mới thành công')
                 setLoading(false)
-                handleOutToogle()
+                navigate('/check')
             }
         } catch (error) {
             setLoading(false)
@@ -96,34 +104,20 @@ export default function FormBook({ handleOutToogle }) {
     }
 
     return (
-        <div className={loading ? `flex items-center justify-center px-40 mt-12 mb-5` : `flex items-center justify-between px-40 mt-12 mb-5`}>
-            {loading ? <Loading /> : <div className="border border-black bg-white  flex flex-col gap-4  mx-auto w-[100%] h-fit p-6  rounded-lg shadow-md">
-                <form className="mt-8" onSubmit={handleSubmit(onSubmit)}>
-                    <div className='book-form'>
-                        <h1 className="mb-2 py-2 mx-auto text-3xl text-justify border-b border-blue-500 font-bold">
-                            Nhập thông tin sách mới
-                        </h1>
-                        <div className='flex justify-between'>
-                            <BookFormLeft onChange={onChange} errors={errors} register={register}/>
-                            <BookFormRight onChange={onChange} errors={errors} register={register}/>
-                        </div>
-                    </div>
-                    <RestInfo onChange={onChange} errors={errors} register={register}/>
-                    <div className='flex gap-8 justify-center mt-8'>
-                        <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-                        >
-                            Nhập hàng
-                        </button>
-                        <button
-                            onClick={handleOutToogle}
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-                        >
-                            Thoát
-                        </button>
-                    </div>
-                </form>
-            </div>}
+        <div className=''>
+        <Navbar onToggleSidebar={handleToggleSidebar}/>
+        <div className='grid grid-cols-5 '>
+          <div className={`col-span-1 `}>
+            <Sidebar toggle={isSidebarOpen} active={active} />
+          </div>
+          <div className={`col-span-4 transition-all ease-in-out duration-300  flex flex-col justify-between ${isSidebarOpen ? ' ' : '-translate-x-[300px] mx-auto w-[98vw]'}`}>
+            <div className=' mt-[60px] mb-12'>
+              <h1 className='font-semibold text-5xl ml-16 my-5 '>Nhập sách mới</h1>
+                <FormCreate onChange={onChange} handleSubmit={handleSubmit} onSubmit={onSubmit} register={register} errors={errors} loading={loading}/>
+            </div>
+            <div className='h-[80px]'><Footer/></div>
+          </div>
         </div>
+      </div>
     )
 }
