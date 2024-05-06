@@ -8,13 +8,13 @@ import { PublicRequest, UserRequest } from '../../service/Request'
 import MyAlert from '../../components/AlertComponent/Alert'
 import { useSelector } from 'react-redux';
 import Swal from "sweetalert2";
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import FormCreate from '../BookListComponent/CreateBook/FormCreate'
 
-
-export default function Booklist({isSidebarOpen}) {
+export default function Booklist({ isSidebarOpen }) {
     const user = useSelector(state => state.currentUser)
     const [bookList, setBookList] = useState([])
-    const [showButton, setShowButton] = useState(false)
+    const [showToggle, setShowToggle] = useState(false)
     const [query, setQuery] = useState('');
     const [debouncedQuery, setDebouncedQuery] = useState('');
     useEffect(() => {
@@ -100,10 +100,6 @@ export default function Booklist({isSidebarOpen}) {
         },
     ];
 
-    const handleHideButton = () => {
-        setShowButton(false)
-        window.scrollTo(0, 0);
-    }
 
     const handleDeleteBook = (id) => {
         MyAlert.Confirm('Xóa sách', 'question', 'Bạn có chắc là muốn xóa sách này không', 'Có', 'Thoát')
@@ -127,6 +123,7 @@ export default function Booklist({isSidebarOpen}) {
                             if (deleteBook.status === 200) {
                                 MyAlert.Alert('success', `${deleteBook.data.message}`);
                                 setQuery('')
+                                window.location.reload()
                             } else {
                                 MyAlert.Alert('error', `${deleteBook.data.response}`);
                             }
@@ -152,12 +149,12 @@ export default function Booklist({isSidebarOpen}) {
         <div className='bg-[#e3e7f1] mb-[17rem]'>
             <div className='flex items-center justify-between px-40 mt-10'>
                 <div className='flex gap-4'>
-                    {showButton === false && <Link to ='/check' onClick={handleHideButton}
+                    {showToggle === false && <button onClick={() => setShowToggle(true)}
                         className={'active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-2 rounded-md border border-white bg-[dodgerblue] text-white flex items-center w-[120px] gap-2 justify-center'}
-                    ><AddIcon />Nhập sách</Link>}
+                    ><AddIcon />Nhập sách</button>}
                 </div>
 
-                <div style={showButton ? {display: 'none'} : {display: 'flex'}} className='flex items-center gap-2 relative' >
+                <div style={showToggle ? { display: 'none' } : { display: 'flex' }} className='flex items-center gap-2 relative' >
                     <div className='absolute left-1 top-[3px] text-[dodgerblue]'>
                         <SearchIcon fontSize='large' />
                     </div>
@@ -165,17 +162,17 @@ export default function Booklist({isSidebarOpen}) {
                 </div>
             </div>
 
-                <div style={{ height: 440, width: '100%'}} className=' mt-12 px-16 '>
-                    <DataGrid initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize: 50,
-                            },
+            {showToggle ? <FormCreate showToggle ={() => setShowToggle(false)} /> : <div style={{ height: 440, width: '100%' }} className=' mt-12 px-16 '>
+                <DataGrid initialState={{
+                    pagination: {
+                        paginationModel: {
+                            pageSize: 50,
                         },
-                    }}
-                        pageSizeOptions={[50]} getRowId={(row) => row.book_id} style={{ fontSize: '1.5rem' }} rows={bookList} columns={columns} className='bg-white' />
-                </div>
-            
+                    },
+                }}
+                    pageSizeOptions={[50]} getRowId={(row) => row.book_id} style={{ fontSize: '1.5rem' }} rows={bookList} columns={columns} className='bg-white' />
+            </div>}
+
         </div>
     );
 }
