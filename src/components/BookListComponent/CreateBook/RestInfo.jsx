@@ -1,6 +1,8 @@
 import React from 'react'
 
-export default function RestInfo({onChange, errors, register}) {
+export default function RestInfo({onChange, errors, register, index}) {
+
+    
     return (
         <div>
             <div className='author-form'>
@@ -14,11 +16,11 @@ export default function RestInfo({onChange, errors, register}) {
                             className='w-[250px] rounded-md h-[35px] pl-2 border border-black'
                             type="text"
                             id='author_name'
-                            onChange={onChange}
+                            onChange={(e) => onChange(index, e)}
 
-                            {...register(`author_name`)}
+                            {...register(`books.${index}.author_name`)}
                         />
-                        <p className='text-red-500 mt-2 text-xl'>{errors.author_name?.message}</p>
+                        {/* <p className='text-red-500 mt-2 text-xl'>{errors.author_name?.message}</p> */}
                     </div>
                 </div>
             </div>
@@ -33,11 +35,11 @@ export default function RestInfo({onChange, errors, register}) {
                             className='w-[250px] rounded-md h-[35px] pl-2 border border-black'
                             type="text"
                             id='manufacturer_name'
-                            onChange={onChange}
+                            onChange={(e) => onChange(index, e)}
 
-                            {...register(`manufacturer_name`)}
+                            {...register(`books.${index}.manufacturer_name`)}
                         />
-                        <p className='text-red-500 mt-2 text-xl'>{errors.manufacturer_name?.message}</p>
+                        {/* <p className='text-red-500 mt-2 text-xl'>{errors.manufacturer_name?.message}</p> */}
                     </div>
                 </div>
             </div>
@@ -53,10 +55,10 @@ export default function RestInfo({onChange, errors, register}) {
                             className='w-[250px] rounded-md h-[35px] pl-2 border border-black'
                             type="text"
                             id='publisher_name'
-
-                            {...register(`publisher_name`)}
+                            onChange={(e) => onChange(index, e)}
+                            {...register(`books.${index}.publisher_name`)}
                         />
-                        <p className='text-red-500 mt-2 text-xl'>{errors.publisher_name?.message}</p>
+                        {/* <p className='text-red-500 mt-2 text-xl'>{errors.publisher_name?.message}</p> */}
                     </div>
                 </div>
             </div>
