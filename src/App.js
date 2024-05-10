@@ -9,10 +9,11 @@ import AdminHome from "./pages/HomePage/AdminHome.jsx";
 import Login from "./pages/LoginPage/Login.jsx";
 import { useSelector } from "react-redux";
 import FormUpdate from "./components/BookListComponent/UpdateBook/formUpdate.jsx";
-import ManageOrders from "./pages/OrdersPage/manageOrders.jsx";
+import ManageOrders from "./pages/OrderUsersPage/manageOrders.jsx";
 import DetailOrder from "./pages/DetailOrderPage/DetailOrder.jsx";
 import UserList from "./pages/ManageUsersPage/UserList.jsx";
 import Statistic from "./pages/StatisticsPage/Statistic.jsx";
+import OrderBooks from "./pages/OrderBooksPage/OrderBooks.jsx";
 
 function App() {
   const user = useSelector(state => state.currentUser)
@@ -37,6 +38,7 @@ function App() {
           <Route path="/manageOrders" element={<ManageOrders/>} />
           <Route path="/manageOrders/:orderId" element={<DetailOrder/>} />
           <Route path="/manageUsers" element={<UserList/>} />
+          <Route path="/manageBookOrders" element={<OrderBooks/>} />
           <Route path="/statistic" element={<Statistic/>} />
         </Route>
         <Route element={<ProtectedRoute />}>

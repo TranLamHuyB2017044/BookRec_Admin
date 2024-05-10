@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import Swal from "sweetalert2";
 import { Link } from 'react-router-dom';
 import FormCreate from '../BookListComponent/CreateBook/FormCreate'
-
+import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 export default function Booklist({ isSidebarOpen }) {
     const user = useSelector(state => state.currentUser)
     const [bookList, setBookList] = useState([])
@@ -152,6 +152,9 @@ export default function Booklist({ isSidebarOpen }) {
                     {showToggle === false && <button onClick={() => setShowToggle(true)}
                         className={'active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-2 rounded-md border border-white bg-[dodgerblue] text-white flex items-center w-[120px] gap-2 justify-center'}
                     ><AddIcon />Nhập sách</button>}
+
+                       <Link to='/manageBookOrders' className={'active:translate-y-1 hover:bg-gradient-to-r from-green-500 to-green-400 px-4 py-2 rounded-md border border-white bg-green-500 text-white flex items-center w-[150px] gap-2 justify-center'}
+                    ><InventoryOutlinedIcon />Xem hóa đơn</Link>
                 </div>
 
                 <div style={showToggle ? { display: 'none' } : { display: 'flex' }} className='flex items-center gap-2 relative' >

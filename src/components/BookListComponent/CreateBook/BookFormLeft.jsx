@@ -73,7 +73,7 @@ export default function BookFormLeft({onChange, errors, register, index}) {
                     {/* <p className='text-red-500 mt-2 text-xl'>{errors.avg_rating?.message}</p> */}
                 </div>
             </div>
-            <div className='form-group  flex gap-2 my-6'>
+            {/* <div className='form-group  flex gap-2 my-6'>
                 <label className='min-w-[150px] ' htmlFor="coverBooks">Hình ảnh về sách (*)</label>
                 <div className=''>
                     <input
@@ -85,9 +85,9 @@ export default function BookFormLeft({onChange, errors, register, index}) {
                         name='coverBooks'
                         {...register(`books.${index}.coverBooks`)}
                     />
-                    {/* <p className='text-red-500 mt-2 text-xl'>{errors.?.message}</p> */}
+                    <p className='text-red-500 mt-2 text-xl'>{errors.?.message}</p>
                 </div>
-            </div>
+            </div> */}
 
         </div>
     )

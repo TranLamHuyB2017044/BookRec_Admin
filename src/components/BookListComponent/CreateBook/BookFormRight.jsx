@@ -13,6 +13,7 @@ export default function BookFormRight({ onChange, errors, register, index }) {
                         type="number"
                         id='original_price'
                         onChange={(e) => onChange(index, e)}
+                        min={0}
                         placeholder='vd: 120000'
                         {...register(`books.${index}.original_price`)}
                     />
@@ -27,7 +28,7 @@ export default function BookFormRight({ onChange, errors, register, index }) {
                         type="number"
                         id='inStock'
                         onChange={(e) => onChange(index, e)}
-
+                        min={0}
                         {...register(`books.${index}.inStock`)}
                     />
                     {/* <p className='text-red-500 mt-2 text-xl'>{errors.inStock?.message}</p> */}
@@ -41,7 +42,7 @@ export default function BookFormRight({ onChange, errors, register, index }) {
                         type="number"
                         id='quantity_sold'
                         onChange={(e) => onChange(index, e)}
-
+                        min={0}
                         {...register(`books.${index}.quantity_sold`)}
                     />
                     {/* <p className='text-red-500 mt-2 text-xl'>{errors.quantity_sold?.message}</p> */}
@@ -54,6 +55,7 @@ export default function BookFormRight({ onChange, errors, register, index }) {
                     <input
                         className='w-[250px] rounded-md h-[35px] pl-2 border border-black'
                         type="number"
+                        min={0}
                         id='pages'
                         onChange={(e) => onChange(index, e)}
                         {...register(`books.${index}.pages`)}
@@ -68,6 +70,7 @@ export default function BookFormRight({ onChange, errors, register, index }) {
                         className='w-[250px] rounded-md h-[35px] pl-2 border border-black'
                         type="number"
                         id='discount'
+                        min={0}
                         onChange={(e) => onChange(index, e)}
                         placeholder='vd: 15 <=> 15%'
                         {...register(`books.${index}.discount`)}

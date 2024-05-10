@@ -14,6 +14,8 @@ export default function UserLists({isSidebarOpen}) {
         getAllUser()
     }, [])
 
+    const sortedUserList = userList.sort((a, b) => b.total_amount - a.total_amount);
+
 
     const columns = [
         {
@@ -83,7 +85,7 @@ export default function UserLists({isSidebarOpen}) {
                         },
                     },
                 }}
-                    pageSizeOptions={[5]} getRowId={(row) => row.user_id} style={{ fontSize: '1.5rem' }} rows={userList} columns={columns} className='bg-white' />
+                    pageSizeOptions={[5]} getRowId={(row) => row.user_id} style={{ fontSize: '1.5rem' }} rows={sortedUserList} columns={columns} className='bg-white' />
             </div>
         </div>
     )

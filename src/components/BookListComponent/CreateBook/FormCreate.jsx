@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import BookFormLeft from './BookFormLeft';
@@ -7,7 +8,7 @@ import BookFormRight from './BookFormRight';
 import RestInfo from './RestInfo';
 import Loading from '../../LoadingComponent/Loading';
 import MyAlert from '../../AlertComponent/Alert';
-
+import { PublicRequest, UserRequest } from '../../../service/Request'
 const schema = yup.object().shape({
     title: yup.string().required("Tên sách là bắt buộc"),
     short_description: yup.string().required("Mô tả chung là bắt buộc"),
@@ -26,21 +27,10 @@ const schema = yup.object().shape({
 
 export default function FormCreate({ showToggle }) {
     const [loading, setLoading] = useState(false);
+    const user_id = useSelector(state => state.currentUser.user_id)
     const { register, handleSubmit, setValue, getValues, formState: { errors }, control } = useForm({
         defaultValues: {
-            books: [{
-                title: '',
-                short_description: '',
-                category: '',
-                publication_date: '',
-                avg_rating: 0,
-                coverBooks: [],
-                original_price: 0,
-                inStock: 0,
-                quantity_sold: 0,
-                pages: 0,
-                discount: 0
-            }]
+            books: [{}]
         }
     });
 
@@ -51,14 +41,42 @@ export default function FormCreate({ showToggle }) {
 
     const handleChange = (index, e) => {
         const { name, value } = e.target;
-        setValue(`books[${index}].${name}`, value); // Cập nhật dữ liệu trong mảng books
+        setValue(`books[${index}].${name}`, value);
     };
 
     const onSubmit = async () => {
-        const data = getValues(); // Lấy dữ liệu từ mảng books
-        console.log(data);
-        // Các xử lý submit khác...
+        const data = getValues();
+        try {
+            setLoading(true);
+            // const formData = new FormData();
+            // data.books.forEach((book, index) => {
+            //     Object.keys(book).forEach(key => {
+            //         if (key === 'coverBooks') {
+            //             if (book[key].length === 0) {
+            //                 MyAlert.Alert('info', `Bạn chưa chọn hình ảnh`)
+            //                 setLoading(false)
+            //             } else if (book[key].length < 4) {
+            //                 MyAlert.Alert('info', `Vui lòng chọn 4 ảnh`)
+            //                 setLoading(false)
+            //             } else {
+            //                 formData.append(`coverBooks[${index}]`, JSON.stringify(book[key]));
+            //             }
+            //         } 
+            //     });
+            // });
+            const rs = await UserRequest.post(`/purchase/${user_id}`,data.books);
+            if (rs.status === 200) {
+                setLoading(false);
+                MyAlert.Alert('success', 'Nhập hàng thành công');
+                showToggle();
+            }
+        } catch (error) {
+            setLoading(false);
+            console.log(error.message);
+        }
     };
+    
+
 
     return (
         <div>
@@ -73,21 +91,7 @@ export default function FormCreate({ showToggle }) {
                                             Nhập thông tin sách thứ {index + 1}
                                         </h1>
                                         <div className='flex gap-8'>
-                                            <button className='active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-2 rounded-md border border-white bg-[dodgerblue] text-white flex items-center w-[120px] gap-2 justify-center' type="button" onClick={() => append({
-                                                value: {
-                                                    title: '',
-                                                    short_description: '',
-                                                    category: '',
-                                                    publication_date: '',
-                                                    avg_rating: 0,
-                                                    coverBooks: [],
-                                                    original_price: 0,
-                                                    inStock: 0,
-                                                    quantity_sold: 0,
-                                                    pages: 0,
-                                                    discount: 0
-                                                }
-                                            })}>
+                                            <button className='active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-2 rounded-md border border-white bg-[dodgerblue] text-white flex items-center w-[120px] gap-2 justify-center' type="button" onClick={() => append({})}>
                                                 Add Input
                                             </button>
                                             {index > 0 && <button className='active:translate-y-1 hover:bg-gradient-to-r from-red-500 to-red-400 px-4 py-2 rounded-md border border-white bg-red-500 text-white flex items-center w-[120px] gap-2 justify-center' type="button" onClick={() => remove(index)}>
