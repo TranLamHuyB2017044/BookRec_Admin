@@ -15,7 +15,7 @@ export default function BookFormLeft({onChange, errors, register, index}) {
                         onChange={(e) => onChange(index, e)}
                         {...register(`books.${index}.title`)}
                     />
-                    {/* <p className='text-red-500 mt-2 text-xl'>{errors.title?.message}</p> */}
+                    <p className='text-red-500 mt-2 text-xl'>{errors.title?.message}</p>
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
@@ -28,7 +28,7 @@ export default function BookFormLeft({onChange, errors, register, index}) {
                         onChange={(e) => onChange(index, e)}
                         {...register(`books.${index}.short_description`)}
                     />
-                    {/* <p className='text-red-500 mt-2 text-xl'>{errors.short_description?.message}</p> */}
+                    <p className='text-red-500 mt-2 text-xl'>{errors.short_description?.message}</p>
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
@@ -42,7 +42,7 @@ export default function BookFormLeft({onChange, errors, register, index}) {
 
                         {...register(`books.${index}.category`)}
                     />
-                    {/* <p className='text-red-500 mt-2 text-xl'>{errors.category?.message}</p> */}
+                    <p className='text-red-500 mt-2 text-xl'>{errors.category?.message}</p>
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
@@ -56,7 +56,7 @@ export default function BookFormLeft({onChange, errors, register, index}) {
                         placeholder='yyyy-mm-dd'
                         {...register(`books.${index}.publication_date`)}
                     />
-                    {/* <p className='text-red-500 mt-2 text-xl'>{errors.publication_date?.message}</p> */}
+                    <p className='text-red-500 mt-2 text-xl'>{errors.publication_date?.message}</p>
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
@@ -70,7 +70,7 @@ export default function BookFormLeft({onChange, errors, register, index}) {
                         placeholder='1 -> 5'
                         {...register(`books.${index}.avg_rating`)}
                     />
-                    {/* <p className='text-red-500 mt-2 text-xl'>{errors.avg_rating?.message}</p> */}
+                    <p className='text-red-500 mt-2 text-xl'>{errors.avg_rating?.message}</p>
                 </div>
             </div>
             {/* <div className='form-group  flex gap-2 my-6'>

@@ -17,7 +17,7 @@ export default function BookFormRight({ onChange, errors, register, index }) {
                         placeholder='vd: 120000'
                         {...register(`books.${index}.original_price`)}
                     />
-                    {/* <p className='text-red-500 mt-2 text-xl'>{errors.original_price?.message}</p> */}
+                    <p className='text-red-500 mt-2 text-xl'>{errors.original_price?.message}</p>
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
@@ -31,7 +31,7 @@ export default function BookFormRight({ onChange, errors, register, index }) {
                         min={0}
                         {...register(`books.${index}.inStock`)}
                     />
-                    {/* <p className='text-red-500 mt-2 text-xl'>{errors.inStock?.message}</p> */}
+                    <p className='text-red-500 mt-2 text-xl'>{errors.inStock?.message}</p>
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
@@ -45,7 +45,7 @@ export default function BookFormRight({ onChange, errors, register, index }) {
                         min={0}
                         {...register(`books.${index}.quantity_sold`)}
                     />
-                    {/* <p className='text-red-500 mt-2 text-xl'>{errors.quantity_sold?.message}</p> */}
+                    <p className='text-red-500 mt-2 text-xl'>{errors.quantity_sold?.message}</p>
                 </div>
             </div>
 
@@ -60,7 +60,7 @@ export default function BookFormRight({ onChange, errors, register, index }) {
                         onChange={(e) => onChange(index, e)}
                         {...register(`books.${index}.pages`)}
                     />
-                    {/* <p className='text-red-500 mt-2 text-xl'>{errors.pages?.message}</p> */}
+                    <p className='text-red-500 mt-2 text-xl'>{errors.pages?.message}</p>
                 </div>
             </div>
             <div className='form-group  flex gap-2 my-6'>
@@ -75,7 +75,7 @@ export default function BookFormRight({ onChange, errors, register, index }) {
                         placeholder='vd: 15 <=> 15%'
                         {...register(`books.${index}.discount`)}
                     />
-                    {/* <p className='text-red-500 mt-2 text-xl'>{errors.discount?.message}</p> */}
+                    <p className='text-red-500 mt-2 text-xl'>{errors.discount?.message}</p>
                 </div>
             </div>
         </div>

@@ -5,9 +5,10 @@ import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
+import DiscountOutlinedIcon from '@mui/icons-material/DiscountOutlined';
 import { Link } from 'react-router-dom';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import Avatar from '../../assets/hinhthe_tranlamhuy.jpg'
+// import Avatar from '../../assets/hinhthe_tranlamhuy.jpg'
 import { useDispatch, useSelector } from 'react-redux';
 import { Logout } from '../../store/userReducer';
 export default function Sidebar({ toggle, active }) {
@@ -26,6 +27,7 @@ export default function Sidebar({ toggle, active }) {
     { id: 2, icon: <ReceiptLongOutlinedIcon fontSize='large' />, text: 'Quản lý đơn hàng', route: '/manageOrders' },
     // { id: 3, icon: <SupportAgentOutlinedIcon fontSize='large' />, text: 'Phản hồi từ khách hàng', route: '/support' },
     { id: 3, icon: <BarChartOutlinedIcon fontSize='large' />, text: 'Thống kê doanh thu', route: '/statistic' },
+    { id: 4, icon: <DiscountOutlinedIcon fontSize='large' />, text: 'Khuyến mãi', route: '/discount' },
   ]
 
 

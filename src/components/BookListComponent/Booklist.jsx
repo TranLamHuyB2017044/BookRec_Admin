@@ -65,7 +65,7 @@ export default function Booklist({ isSidebarOpen }) {
             field: 'Giá bán', headerName: 'Giá bán (vnd)', width: 130, renderCell: (params) => {
                 return (
                     <div>
-                        <p>{(params.row.discount === 0 ? params.row.original_price : params.row.original_price - (params.row.original_price * params.row.discount) / 100).toLocaleString()}</p>
+                        <p>{params.row.original_price.toLocaleString()}</p>
                     </div>
                 );
             },
@@ -74,7 +74,7 @@ export default function Booklist({ isSidebarOpen }) {
             field: 'Giá vốn', headerName: 'Giá vốn (vnd)', width: 130, renderCell: (params) => {
                 return (
                     <div>
-                        <p>{(params.row.original_price * 0.5).toLocaleString()}</p>
+                        <p>{(params.row.original_price).toLocaleString()}</p>
                     </div>
                 );
             },

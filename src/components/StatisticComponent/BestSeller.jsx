@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { BestSellerData } from '../../data'
+import React, { useEffect, useState } from 'react'
+// import { BestSellerData } from '../../data'
 import { UserRequest } from '../../service/Request'
 export default function BestSeller({ isSidebarOpen }) {
     const [bestSellerBook, setBestSellerBook] = useState([])
@@ -18,7 +18,7 @@ export default function BestSeller({ isSidebarOpen }) {
 
     const handleTotalPrice = (book) => {
         let totalPrice = 0
-        totalPrice = (book.original_price - (book.original_price * (book.discount / 100))) * book.so_luong_ban
+        totalPrice = book.original_price  * book.so_luong_ban
         return totalPrice
     }
 

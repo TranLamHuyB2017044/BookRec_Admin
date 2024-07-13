@@ -48,30 +48,17 @@ export default function FormCreate({ showToggle }) {
         const data = getValues();
         try {
             setLoading(true);
-            // const formData = new FormData();
-            // data.books.forEach((book, index) => {
-            //     Object.keys(book).forEach(key => {
-            //         if (key === 'coverBooks') {
-            //             if (book[key].length === 0) {
-            //                 MyAlert.Alert('info', `Bạn chưa chọn hình ảnh`)
-            //                 setLoading(false)
-            //             } else if (book[key].length < 4) {
-            //                 MyAlert.Alert('info', `Vui lòng chọn 4 ảnh`)
-            //                 setLoading(false)
-            //             } else {
-            //                 formData.append(`coverBooks[${index}]`, JSON.stringify(book[key]));
-            //             }
-            //         } 
-            //     });
-            // });
             const rs = await UserRequest.post(`/purchase/${user_id}`,data.books);
             if (rs.status === 200) {
-                setLoading(false);
                 MyAlert.Alert('success', 'Nhập hàng thành công');
-                showToggle();
+                setTimeout(() => {
+                    setLoading(false);
+                    showToggle()
+                }, 2000)
             }
         } catch (error) {
             setLoading(false);
+            MyAlert.Alert('error', 'Có lỗi xảy ra');
             console.log(error.message);
         }
     };

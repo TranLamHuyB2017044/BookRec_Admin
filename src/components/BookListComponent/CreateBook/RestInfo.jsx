@@ -20,7 +20,7 @@ export default function RestInfo({onChange, errors, register, index}) {
 
                             {...register(`books.${index}.author_name`)}
                         />
-                        {/* <p className='text-red-500 mt-2 text-xl'>{errors.author_name?.message}</p> */}
+                        <p className='text-red-500 mt-2 text-xl'>{errors.author_name?.message}</p>
                     </div>
                 </div>
             </div>
@@ -39,7 +39,7 @@ export default function RestInfo({onChange, errors, register, index}) {
 
                             {...register(`books.${index}.manufacturer_name`)}
                         />
-                        {/* <p className='text-red-500 mt-2 text-xl'>{errors.manufacturer_name?.message}</p> */}
+                        <p className='text-red-500 mt-2 text-xl'>{errors.manufacturer_name?.message}</p>
                     </div>
                 </div>
             </div>
@@ -58,7 +58,7 @@ export default function RestInfo({onChange, errors, register, index}) {
                             onChange={(e) => onChange(index, e)}
                             {...register(`books.${index}.publisher_name`)}
                         />
-                        {/* <p className='text-red-500 mt-2 text-xl'>{errors.publisher_name?.message}</p> */}
+                        <p className='text-red-500 mt-2 text-xl'>{errors.publisher_name?.message}</p>
                     </div>
                 </div>
             </div>

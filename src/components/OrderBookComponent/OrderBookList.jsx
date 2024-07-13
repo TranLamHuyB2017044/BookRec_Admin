@@ -27,8 +27,8 @@ export default function OrderBookList() {
             <Link to="/" className='float-end -mt-20 active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-2 rounded-md border border-white bg-[dodgerblue] text-white flex items-center w-[120px] gap-2 justify-center'>Trở về</Link>
             {
                 purchaseOrders.length <= 0 ? (
-                    <div >
-                        <div className='grid grid-cols-6 px-4 py-2 mt-16 '>
+                    <div className='h-screen'>
+                        <div className='grid grid-cols-6 px-4 py-2 mt-16 mx-auto'>
                             <p className='col-span-6'>không có đơn hàng nào</p>
                         </div>
                     </div>
