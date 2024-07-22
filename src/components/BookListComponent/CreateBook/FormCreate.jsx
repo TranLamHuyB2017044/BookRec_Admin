@@ -8,7 +8,7 @@ import BookFormRight from './BookFormRight';
 import RestInfo from './RestInfo';
 import Loading from '../../LoadingComponent/Loading';
 import MyAlert from '../../AlertComponent/Alert';
-import { PublicRequest, UserRequest } from '../../../service/Request'
+import { UserRequest } from '../../../service/Request'
 const schema = yup.object().shape({
     title: yup.string().required("Tên sách là bắt buộc"),
     short_description: yup.string().required("Mô tả chung là bắt buộc"),

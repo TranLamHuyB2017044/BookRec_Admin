@@ -17,6 +17,8 @@ export default function Booklist({ isSidebarOpen }) {
     const [showToggle, setShowToggle] = useState(false)
     const [query, setQuery] = useState('');
     const [debouncedQuery, setDebouncedQuery] = useState('');
+
+    
     useEffect(() => {
         const timerId = setTimeout(() => {
             setDebouncedQuery(query);
