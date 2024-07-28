@@ -3,11 +3,11 @@ import Navbar from '../../components/NavbarComponent/Navbar'
 import Sidebar from '../../components/SideBarComponent/Sidebar'
 import Footer from '../../components/FooterComponent/Footer'
 import { Modal } from '@mui/material';
-import DiscountTable from '../../components/DiscountComponent/discount_table';
-import CreateDiscount from '../../components/DiscountComponent/create_discount';
+import CreateDiscount from '../../components/PromotinComponent/create_discount';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import CreateCoupon from '../../components/DiscountComponent/create_coupon';
-export default function Discount() {
+import CreateCoupon from '../../components/PromotinComponent/create_coupon';
+import PromotionTable from '../../components/PromotinComponent/promotion_table';
+export default function Promotion() {
     const active = 4
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [showCreateDiscount, setShowCreateDiscount] = useState(false);
@@ -37,13 +37,13 @@ export default function Discount() {
                     <div className=' mt-[60px]'>
                         <div className='flex justify-between '>
                             <h1 className='font-semibold text-5xl ml-16 mt-12'>{showCreateDiscount ? 'Thêm mới mã khuyến mãi' : 'Khuyến mãi'}</h1>
-                            {showCreateDiscount  ? <button onClick={() => handleSetTypeDiscount(0)}
+                            {showCreateDiscount ? <button onClick={() => handleSetTypeDiscount(0)}
                                 className={'active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4  rounded-md border border-white bg-[dodgerblue] text-white w-[150px] py-2 mr-32 mt-[30px]'}
-                            >Trở về </button> :<button onClick={handleOpenModal}
+                            >Trở về </button> : <button onClick={handleOpenModal}
                                 className={'active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4  rounded-md border border-white bg-[dodgerblue] text-white w-[150px] py-2 mr-32 mt-[30px]'}
                             >Tạo khuyến mãi</button>}
                         </div>
-                        {typeDiscount === 0 ? <DiscountTable /> : typeDiscount === 1 ? <CreateCoupon /> : <CreateDiscount />}
+                        {typeDiscount === 0 ? <PromotionTable /> : typeDiscount === 1 ? <CreateCoupon /> : <CreateDiscount setTypeDiscount={() => handleSetTypeDiscount(0)} />}
                         <Modal
                             open={openModal}
                             onClose={handleCloseModal}

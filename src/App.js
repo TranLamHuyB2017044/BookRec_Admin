@@ -14,7 +14,8 @@ import DetailOrder from "./pages/DetailOrderPage/DetailOrder.jsx";
 import UserList from "./pages/ManageUsersPage/UserList.jsx";
 import Statistic from "./pages/StatisticsPage/Statistic.jsx";
 import OrderBooks from "./pages/OrderBooksPage/OrderBooks.jsx";
-import Discount from "./pages/DiscountPage/discount.jsx";
+import PromotionDetail from "./pages/DiscountDetailPage/PromotionDetail.jsx";
+import Promotion from "./pages/DiscountPage/promotion.jsx";
 
 function App() {
   const user = useSelector(state => state.currentUser)
@@ -41,7 +42,8 @@ function App() {
           <Route path="/manageUsers" element={<UserList/>} />
           <Route path="/manageBookOrders" element={<OrderBooks/>} />
           <Route path="/statistic" element={<Statistic/>} />
-          <Route path="/discount" element={<Discount/>} />
+          <Route path="/promotion" element={<Promotion/>} />
+          <Route path="/promotion/:promotionId" element={<PromotionDetail/>} />
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/login" element={<Login />} />

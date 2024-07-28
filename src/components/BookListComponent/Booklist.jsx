@@ -73,10 +73,10 @@ export default function Booklist({ isSidebarOpen }) {
             },
         },
         {
-            field: 'Giá vốn', headerName: 'Giá vốn (vnd)', width: 130, renderCell: (params) => {
+            field: 'Giảm giá', headerName: 'Giảm giá (%)', width: 130, renderCell: (params) => {
                 return (
                     <div>
-                        <p>{(params.row.original_price).toLocaleString()}</p>
+                        <p>{params.row.promotion_percent === null  ? '0' : params.row.promotion_percent}</p>
                     </div>
                 );
             },

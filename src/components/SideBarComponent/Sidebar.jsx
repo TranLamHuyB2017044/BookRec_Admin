@@ -27,7 +27,7 @@ export default function Sidebar({ toggle, active }) {
     { id: 2, icon: <ReceiptLongOutlinedIcon fontSize='large' />, text: 'Quản lý đơn hàng', route: '/manageOrders' },
     // { id: 3, icon: <SupportAgentOutlinedIcon fontSize='large' />, text: 'Phản hồi từ khách hàng', route: '/support' },
     { id: 3, icon: <BarChartOutlinedIcon fontSize='large' />, text: 'Thống kê doanh thu', route: '/statistic' },
-    { id: 4, icon: <DiscountOutlinedIcon fontSize='large' />, text: 'Khuyến mãi', route: '/discount' },
+    { id: 4, icon: <DiscountOutlinedIcon fontSize='large' />, text: 'Khuyến mãi', route: '/promotion' },
   ]
 
 

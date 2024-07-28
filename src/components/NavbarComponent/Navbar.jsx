@@ -30,11 +30,7 @@ export default function Navbar({onToggleSidebar}) {
                 </button>
             </div>
             <div className='flex items-center gap-8'>
-                <IconButton aria-label="cart" >
-                    <Badge badgeContent={4} color="secondary">
-                        <NotificationsOutlinedIcon  fontSize='large'/>
-                    </Badge>
-                </IconButton>
+
                 <img className='rounded-full w-[45px] h-[45px]' src={user.user_ava} alt="user-ava" />
                 <button onClick={() => setShowSubNav(!showSubNav)} className='cursor-pointer relative'>{user.fullname} <ArrowDropDownIcon fontSize='large'/>
                     {showSubNav && <ul className='absolute top-[42px] border right-[0px] z-50 shadow-custom bg-opacity-58 bg-white  w-[250px]'>
