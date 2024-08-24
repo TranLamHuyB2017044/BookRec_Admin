@@ -61,7 +61,7 @@ export default function UpdateBookRight({ onChange, register, book }) {
                     />
                 </div>
             </div>
-            <div className='form-group  flex gap-2 my-6'>
+            {/* <div className='form-group  flex gap-2 my-6'>
                 <label className='min-w-[150px] ' htmlFor="discount">Tỉ lệ giảm (*)</label>
                 <div className=''>
 
@@ -75,7 +75,7 @@ export default function UpdateBookRight({ onChange, register, book }) {
                         {...register(`discount`)}
                     />
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

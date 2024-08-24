@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Navbar from '../../components/NavbarComponent/Navbar'
 import Sidebar from '../../components/SideBarComponent/Sidebar'
 import Footer from '../../components/FooterComponent/Footer'
+import PromotionDetailForm from '../../components/PromotionDetailComponent/PromotionDetailForm';
 
 export default function PromotionDetail() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -18,7 +19,8 @@ export default function PromotionDetail() {
                 </div>
                 <div className={`col-span-4 transition-all ease-in-out duration-300  flex flex-col justify-between ${isSidebarOpen ? ' ' : '-translate-x-[300px] mx-auto w-[98vw]'}`}>
                     <div className=' mt-[60px] mb-12'>
-                        <h1 className='font-semibold text-5xl ml-16 my-5 '>Kiểm kho</h1>
+                        <h1 className='font-semibold text-5xl ml-16 my-5 '>Chi tiết khuyến mãi</h1>
+                        <PromotionDetailForm/>
                     </div>
                     <div className='h-[80px]'><Footer /></div>
                 </div>

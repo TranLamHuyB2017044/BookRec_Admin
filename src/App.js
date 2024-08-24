@@ -16,6 +16,7 @@ import Statistic from "./pages/StatisticsPage/Statistic.jsx";
 import OrderBooks from "./pages/OrderBooksPage/OrderBooks.jsx";
 import PromotionDetail from "./pages/DiscountDetailPage/PromotionDetail.jsx";
 import Promotion from "./pages/DiscountPage/promotion.jsx";
+import AutoAddBook from "./pages/AutoAddBookPage/AutoAddBook.jsx";
 
 function App() {
   const user = useSelector(state => state.currentUser)
@@ -44,6 +45,7 @@ function App() {
           <Route path="/statistic" element={<Statistic/>} />
           <Route path="/promotion" element={<Promotion/>} />
           <Route path="/promotion/:promotionId" element={<PromotionDetail/>} />
+          <Route path="/autoAddBook" element={<AutoAddBook/>} />
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="/login" element={<Login />} />

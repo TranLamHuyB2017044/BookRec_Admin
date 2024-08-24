@@ -79,8 +79,8 @@ export default function CreateDiscount({ setTypeDiscount }) {
   };
 
 
-  const timeStart = dayjs(dateTimeStartValue).format('DD-MM-YYYY HH:mm:ss')
-  const timeEnd = dayjs(dateTimeEndValue).format('DD-MM-YYYY HH:mm:ss')
+  const timeStart = dayjs(dateTimeStartValue).format('YYYY-MM-DD HH:mm:ss')
+  const timeEnd = dayjs(dateTimeEndValue).format('YYYY-MM-DD HH:mm:ss')
 
 
   const handleGetIdBookSelected = (bookId) => {
@@ -96,9 +96,12 @@ export default function CreateDiscount({ setTypeDiscount }) {
 
   const handleCreateDiscountPromotion = async (e) => {
     e.preventDefault();
+    if (!promotionName || !promotionValue || !timeStart || !timeEnd || (isApplyForChecked === 1 && !selectedBooks.length) || (isApplyForChecked === 2 && !category)) {
+      Alert.Alert('info', 'Hãy điền đủ các giá trị !');
+      return;
+    }
     try {
       const type_promotion = isApplyForChecked === 0 ? 'all' : isApplyForChecked === 1 ? 'book' : 'category'
-      console.log('typePromotion', type_promotion) 
       const data = {
         type_promotion,
         promotion_name: promotionName,
@@ -108,13 +111,16 @@ export default function CreateDiscount({ setTypeDiscount }) {
         book_ids: selectedBooks,
         category_name: category
       }
+      
       const response_createPromotion = await UserRequest.post('promotion/', data);
       if(response_createPromotion.status === 200){
         Alert.Alert('success',  response_createPromotion.data.message)
         setTypeDiscount()
+      }else if (response_createPromotion.status === 201){
+        Alert.Alert('info',  response_createPromotion.data.message)
       }
     } catch (error) {
-      Alert.Alert('error',  error.message)
+      Alert.Alert('error',  error.data.message)
 
       console.log(error)
     }
