@@ -24,7 +24,7 @@ export default function CreateDiscount({ setTypeDiscount }) {
     }, 500);
 
     return () => {
-      clearTimeout(timerId);
+      clearTimeout(timerId);  
     };
   }, [query]);
 

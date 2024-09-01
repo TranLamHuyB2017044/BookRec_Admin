@@ -7,26 +7,30 @@ import dayjs from 'dayjs';
 import myAlert from '../AlertComponent/Alert.js'
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
-export default function PromotionTable({ isSidebarOpen }) {
+export default function PromotionTable({ isSidebarOpen, tabBarValue }) {
     const [promotionsRows, setPromotionRows] = useState([])
     const user = useSelector(state => state.currentUser)
-
+    const [couponRows, setCouponRows] = useState([])
 
     useEffect(() => {
-        const getPromotionList = async () => {
+        const getData = async () => {
             try {
-                const rs = await UserRequest.get('/promotion')
-                setPromotionRows(rs.data)
+                if (tabBarValue === 0) {
+                    const rs = await UserRequest.get('/promotion')
+                    setPromotionRows(rs.data)
+                } else {
+                    const rs = await UserRequest.get('/coupon')
+                    setCouponRows(rs.data)
+                }
             } catch (error) {
                 console.log(error)
             }
         }
-        getPromotionList()
+        getData()
     }, [])
 
 
-    const columns = [
-
+    const promotionColumns = [
         {
             field: 'Tên khuyến mãi', headerName: 'Tên khuyến mãi', width: isSidebarOpen ? 500 : 450, renderCell: (params) => {
                 return (
@@ -78,6 +82,87 @@ export default function PromotionTable({ isSidebarOpen }) {
             field: 'Chỉnh sửa', headerName: 'Chỉnh sửa', width: isSidebarOpen ? 300 : 170, renderCell: (params) => {
                 return (
                     <select id="edit" onChange={(e) => handleUpdateStatusById(e, params.row.promotion_id)} className='px-2 py-3 rounded-md'>
+                        <option defaultChecked >Chỉnh sửa</option>
+                        <option value="isApplying">Đang áp dụng</option>
+                        <option value="stopApplying">Ngừng áp dụng</option>
+                    </select>
+                );
+            },
+        },
+
+    ];
+
+    const couponColumns = [
+
+        {
+            field: 'Tên khuyến mãi', headerName: 'Tên khuyến mãi', width: isSidebarOpen ? 300 : 250, renderCell: (params) => {
+                return (
+                    <div>
+                        <p className='text-[dodgerblue] text-[16px]'>{params.row.coupon_name}</p>
+                        {/* <p >{params.row.detail.desc}</p> */}
+                    </div>
+                );
+            },
+        },
+        {
+            field: 'Trạng thái', headerName: 'Trạng thái', width: isSidebarOpen ? 200 : 130, renderCell: (params) => {
+                return (
+                    <div>
+                        <p>{params.row.coupon_status}</p>
+                    </div>
+                );
+            },
+        },
+
+        {
+            field: 'Bắt đầu', headerName: 'Bắt đầu', width: isSidebarOpen ? 200 : 200, renderCell: (params) => {
+                return (
+                    <div>
+                        <p>{dayjs(params.row.start_date).format('DD-MM-YYYY HH:mm:ss')}</p>
+                    </div>
+                );
+            },
+        },
+        {
+            field: 'Kết thúc', headerName: 'Kết thúc', width: isSidebarOpen ? 200 : 200, renderCell: (params) => {
+                return (
+                    <div>
+                        <p>{dayjs(params.row.end_date).format('DD-MM-YYYY HH:mm:ss')}</p>
+                    </div>
+                );
+            },
+        },
+        {
+            field: 'Giá trị', headerName: 'Giá trị', width: isSidebarOpen ? 200 : 80, renderCell: (params) => {
+                return (
+                    <div>
+                        <p>{params.row.coupon_percent}%</p>
+                    </div>
+                );
+            },
+        },
+        {
+            field: 'Loại khuyến mãi', headerName: 'Loại khuyến mãi', width: isSidebarOpen ? 200 : 150, renderCell: (params) => {
+                return (
+                    <div>
+                        <p>{params.row.coupon_type}</p>
+                    </div>
+                );
+            },
+        },
+        {
+            field: 'Điều kiện', headerName: 'Điều kiện (>=)', width: isSidebarOpen ? 200 : 150, renderCell: (params) => {
+                return (
+                    <div>
+                        <p>{params.row.applying_condition}</p>
+                    </div>
+                );
+            },
+        },
+        {
+            field: 'Chỉnh sửa', headerName: 'Chỉnh sửa', width: isSidebarOpen ? 300 : 170, renderCell: (params) => {
+                return (
+                    <select id="edit" className='px-2 py-3 rounded-md'>
                         <option defaultChecked >Chỉnh sửa</option>
                         <option value="isApplying">Đang áp dụng</option>
                         <option value="stopApplying">Ngừng áp dụng</option>
@@ -151,8 +236,8 @@ export default function PromotionTable({ isSidebarOpen }) {
                 }}
                     loading={promotionsRows.length === 0}
                     pageSizeOptions={[50]}
-                    getRowId={(row) => row.promotion_id}
-                    style={{ fontSize: '1.5rem' }} rows={promotionsRows} columns={columns} className='bg-white' />
+                    getRowId={(row) => tabBarValue === 0 ? row.promotion_id : row.coupon_id}
+                    style={{ fontSize: '1.5rem' }} rows={tabBarValue === 0 ? promotionsRows : couponRows} columns={tabBarValue === 0 ? promotionColumns : couponColumns} className='bg-white' />
             </div>
         </div>
     );

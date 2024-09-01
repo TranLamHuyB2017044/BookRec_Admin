@@ -14,7 +14,6 @@ import DetailOrder from "./pages/DetailOrderPage/DetailOrder.jsx";
 import UserList from "./pages/ManageUsersPage/UserList.jsx";
 import Statistic from "./pages/StatisticsPage/Statistic.jsx";
 import OrderBooks from "./pages/OrderBooksPage/OrderBooks.jsx";
-import PromotionDetail from "./pages/DiscountDetailPage/PromotionDetail.jsx";
 import Promotion from "./pages/DiscountPage/promotion.jsx";
 import AutoAddBook from "./pages/AutoAddBookPage/AutoAddBook.jsx";
 
@@ -44,7 +43,6 @@ function App() {
           <Route path="/manageBookOrders" element={<OrderBooks/>} />
           <Route path="/statistic" element={<Statistic/>} />
           <Route path="/promotion" element={<Promotion/>} />
-          <Route path="/promotion/:promotionId" element={<PromotionDetail/>} />
           <Route path="/autoAddBook" element={<AutoAddBook/>} />
         </Route>
         <Route element={<ProtectedRoute />}>

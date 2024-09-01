@@ -7,6 +7,8 @@ import CreateDiscount from '../../components/PromotinComponent/create_discount';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CreateCoupon from '../../components/PromotinComponent/create_coupon';
 import PromotionTable from '../../components/PromotinComponent/promotion_table';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 export default function Promotion() {
     const active = 4
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -25,7 +27,11 @@ export default function Promotion() {
         handleCloseModal();
         setShowCreateDiscount(!showCreateDiscount);
     }
+    const [tabBarValue, setTabBarvalue] = useState(0);
 
+    const handleChangeTab = (e, newValue) => {
+        setTabBarvalue(newValue);
+    };
     return (
         <div>
             <Navbar onToggleSidebar={handleToggleSidebar} />
@@ -43,7 +49,13 @@ export default function Promotion() {
                                 className={'active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4  rounded-md border border-white bg-[dodgerblue] text-white w-[150px] py-2 mr-32 mt-[30px]'}
                             >Tạo khuyến mãi</button>}
                         </div>
-                        {typeDiscount === 0 ? <PromotionTable /> : typeDiscount === 1 ? <CreateCoupon /> : <CreateDiscount setTypeDiscount={() => handleSetTypeDiscount(0)} />}
+                        <div className='pl-20 pt-16 '>
+                            <Tabs value={tabBarValue} onChange={handleChangeTab} aria-label="basic tabs example">
+                                <Tab label="Book promotions" sx={{fontSize: "14px"}} />
+                                <Tab label="User coupons" sx={{fontSize: "14px"}} />
+                            </Tabs>
+                        </div>
+                        {typeDiscount === 0 ? <PromotionTable tabBarValue = {tabBarValue}/> : typeDiscount === 1 ? <CreateCoupon setTypeDiscount={() => handleSetTypeDiscount(0)} /> : <CreateDiscount setTypeDiscount={() => handleSetTypeDiscount(0)} />}
                         <Modal
                             open={openModal}
                             onClose={handleCloseModal}
