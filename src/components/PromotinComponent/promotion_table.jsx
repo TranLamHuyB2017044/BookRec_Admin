@@ -1,5 +1,3 @@
-
-import SearchIcon from '@mui/icons-material/Search';
 import { DataGrid } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { UserRequest } from '../../service/Request.js'
@@ -7,10 +5,12 @@ import dayjs from 'dayjs';
 import myAlert from '../AlertComponent/Alert.js'
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
+
+
 export default function PromotionTable({ isSidebarOpen, tabBarValue }) {
-    const [promotionsRows, setPromotionRows] = useState([])
     const user = useSelector(state => state.currentUser)
     const [couponRows, setCouponRows] = useState([])
+    const [promotionsRows, setPromotionRows] = useState([])
 
     useEffect(() => {
         const getData = async () => {
@@ -27,7 +27,7 @@ export default function PromotionTable({ isSidebarOpen, tabBarValue }) {
             }
         }
         getData()
-    }, [])
+    }, [tabBarValue])
 
 
     const promotionColumns = [
@@ -81,7 +81,7 @@ export default function PromotionTable({ isSidebarOpen, tabBarValue }) {
         {
             field: 'Chỉnh sửa', headerName: 'Chỉnh sửa', width: isSidebarOpen ? 300 : 170, renderCell: (params) => {
                 return (
-                    <select id="edit" onChange={(e) => handleUpdateStatusById(e, params.row.promotion_id)} className='px-2 py-3 rounded-md'>
+                    <select id="edit" onChange={(e) => handleUpdatePromotionStatusById(e, params.row.promotion_id)} className='px-2 py-3 rounded-md'>
                         <option defaultChecked >Chỉnh sửa</option>
                         <option value="isApplying">Đang áp dụng</option>
                         <option value="stopApplying">Ngừng áp dụng</option>
@@ -162,7 +162,7 @@ export default function PromotionTable({ isSidebarOpen, tabBarValue }) {
         {
             field: 'Chỉnh sửa', headerName: 'Chỉnh sửa', width: isSidebarOpen ? 300 : 170, renderCell: (params) => {
                 return (
-                    <select id="edit" className='px-2 py-3 rounded-md'>
+                    <select onChange={(e) => handleUpdateCouponStatusById(e, params.row.coupon_id)} id="edit" className='px-2 py-3 rounded-md'>
                         <option defaultChecked >Chỉnh sửa</option>
                         <option value="isApplying">Đang áp dụng</option>
                         <option value="stopApplying">Ngừng áp dụng</option>
@@ -174,7 +174,7 @@ export default function PromotionTable({ isSidebarOpen, tabBarValue }) {
     ];
 
 
-    const handleUpdateStatusById = (e, promotion_id) => {
+    const handleUpdatePromotionStatusById = (e, promotion_id) => {
         promotionsRows.map((promotion_item) => {
             const update_status = e.target.value;
             if (update_status === 'Chỉnh sửa') {
@@ -203,6 +203,57 @@ export default function PromotionTable({ isSidebarOpen, tabBarValue }) {
                                 if (response.status === 200) {
                                     await UserRequest.put(`/promotion/${promotion_id}`, { promotion_id, promotion_status: convert_status_to_update })
                                     myAlert.Alert('success', 'Cập nhật trạng thái promotion thành công')
+                                    setTimeout(() => {
+                                        window.location.reload();
+                                    }, 2000)
+                                } else {
+                                    Swal.fire(`Sai mật khẩu`);
+                                }
+                            }
+
+                        }
+                    })
+                    .catch(error => {
+                        const errorMessage = error.response?.data || "An error occurred.";
+                        myAlert.Alert("error", errorMessage);
+                    });
+
+
+            }
+        })
+    }
+
+
+    
+    const handleUpdateCouponStatusById = (e, coupon_id) => {
+        couponRows.map((coupon_item) => {
+            const update_status = e.target.value;
+            if (update_status === 'Chỉnh sửa') {
+                return false
+            }
+            const convert_status = update_status === 'isApplying' ? 'đang áp dụng' : 'ngừng áp dụng'
+            const convert_status_to_uppercase = update_status === 'isApplying' ? 'Đang áp dụng' : 'Ngừng áp dụng'
+            const convert_status_to_update = update_status === 'isApplying' ? 'Đang áp dụng' : 'Ngừng áp dụng'
+            if (coupon_id === coupon_item.coupon_id) {
+                myAlert.Confirm(convert_status_to_uppercase, 'question', 'Xác nhận ' + convert_status + ' cho khuyến mãi này ?', 'Có', 'Thoát')
+                    .then(async (result) => {
+                        if (result.value) {
+                            const { value: password } = await Swal.fire({
+                                title: "Vui lòng nhập password của bạn để xác nhận " + convert_status,
+                                input: "password",
+                                inputLabel: "Password",
+                                inputPlaceholder: "Enter your password",
+                                inputAttributes: {
+                                    maxlength: "10",
+                                    autocapitalize: "off",
+                                    autocorrect: "off"
+                                }
+                            });
+                            if (password) {
+                                const response = await UserRequest.post('/user/login/admin', { email: user.email, password: password });
+                                if (response.status === 200) {
+                                    await UserRequest.put(`/coupon`, { coupon_id, coupon_status: convert_status_to_update })
+                                    myAlert.Alert('success', 'Cập nhật trạng thái coupon thành công')
                                     setTimeout(() => {
                                         window.location.reload();
                                     }, 2000)

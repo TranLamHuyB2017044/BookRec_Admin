@@ -15,7 +15,7 @@ export default function CreateCoupon({ setTypeDiscount }) {
   const [userList, setUserList] = useState([])
   const [couponName, setCouponName] = useState('');
   const [couponValue, setCouponValue] = useState(0);
-  const [typeChecked, setTypeChecked] = useState()
+  const [typeChecked, setTypeChecked] = useState(null)
   const [applyingCondition, setApplyingCondition] = useState(0)
 
   const typeCoupon = [
@@ -23,7 +23,7 @@ export default function CreateCoupon({ setTypeDiscount }) {
     { id: 2, title: "Miễn phí vẫn chuyển", label: "free_shipping" },
   ]
 
-  const [applyingUser, setApplyingUser] = useState()
+  const [applyingUser, setApplyingUser] = useState(null)
   const isApplyingUser = [
     { id: 1, title: "Tất cả", label: "all user" },
     { id: 2, title: "Khách hàng", label: "users" },
@@ -86,10 +86,10 @@ export default function CreateCoupon({ setTypeDiscount }) {
     });
   };
 
-  console.log(userList);
+
   const handleCreateUserCoupon = async (e) => {
     e.preventDefault()
-    if (!couponName ||  !timeStart || !timeEnd) {
+    if (!couponName || !timeStart || !timeEnd) {
       Alert.Alert('info', 'Hãy điền đủ các giá trị !');
       return;
     }
@@ -120,6 +120,8 @@ export default function CreateCoupon({ setTypeDiscount }) {
 
   const timeStart = dayjs(dateTimeStartValue).format('YYYY-MM-DD HH:mm:ss')
   const timeEnd = dayjs(dateTimeEndValue).format('YYYY-MM-DD HH:mm:ss')
+
+
 
   return (
     <div className='px-[8rem]  items-start flex gap-24 mt-20'>
@@ -155,7 +157,7 @@ export default function CreateCoupon({ setTypeDiscount }) {
             <p className='font-bold'>Điều kiện áp dụng</p>
             <div className='flex gap-2 flex-col'>
               <label htmlFor="applying_condition">Giá trị tối thiểu để áp dụng</label>
-              <input onChange={(e) => setApplyingCondition(e.target.value)} type="number" name="" id="applying_condition" className=' w-[30%] border focus:outline-[dodgerblue] p-2 placeholder-right' placeholder='%' />
+              <input onChange={(e) => setApplyingCondition(e.target.value)} type="number" name="" id="applying_condition" className=' w-[30%] border focus:outline-[dodgerblue] p-2 placeholder-right' placeholder='vnđ' />
             </div>
           </section>
           <section className='bg-white p-8  rounded-md flex flex-col gap-4'>
@@ -216,8 +218,27 @@ export default function CreateCoupon({ setTypeDiscount }) {
         </form>
       </div>
       <div className='bg-white p-8 basis-1/3 rounded-md mr-20'>
-        <h3>Tổng quan mã khuyến mãi</h3>
-        <p>ABCDEXZ</p>
+        <h3 className='font-bold'>Tổng quan mã khuyến mãi</h3>
+        {couponName !== '' && <div className=' flex gap-2'>
+          <p className='font-bold'>Tên:</p>
+          <p>{couponName}</p>
+        </div>}
+        {typeChecked !== null && <div className=' flex gap-2'>
+          <p className='font-bold '>Loại khuyến mãi:</p>
+          <p>{typeChecked === 1 ? 'Theo phần trăm' : 'Miễn phí vận chuyển'}</p>
+        </div>}
+        {couponValue !== 0 && <div className=' flex gap-2'>
+          <p className='font-bold '>Giá trị:</p>
+          <p>{couponValue}%</p>
+        </div>}
+        {dateTimeStartValue !== null && <div className='flex gap-2'>
+          <p className='font-bold'>Bắt đầu: </p>
+          <p>{timeStart}</p>
+        </div>}
+        {dateTimeEndValue !== null && <div className='flex gap-2'>
+          <p className='font-bold'>Kết thúc: </p>
+          <p>{timeEnd}</p>
+        </div>}
       </div>
     </div>
   )
