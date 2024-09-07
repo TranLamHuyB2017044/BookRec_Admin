@@ -3,10 +3,10 @@ import Navbar from '../../components/NavbarComponent/Navbar'
 import Sidebar from '../../components/SideBarComponent/Sidebar'
 import Footer from '../../components/FooterComponent/Footer'
 import { Modal } from '@mui/material';
-import CreateDiscount from '../../components/PromotinComponent/create_discount';
+import CreateDiscount from '../../components/PromotionComponent/create_discount';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import CreateCoupon from '../../components/PromotinComponent/create_coupon';
-import PromotionTable from '../../components/PromotinComponent/promotion_table';
+import CreateCoupon from '../../components/PromotionComponent/create_coupon';
+import PromotionTable from '../../components/PromotionComponent/promotion_table';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 export default function Promotion() {

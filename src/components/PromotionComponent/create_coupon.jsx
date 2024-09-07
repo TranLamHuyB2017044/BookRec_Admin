@@ -108,6 +108,7 @@ export default function CreateCoupon({ setTypeDiscount }) {
       if (response_createCoupon.status === 200) {
         Alert.Alert('success', response_createCoupon.data.message)
         setTypeDiscount()
+        window.location.reload()
       } else if (response_createCoupon.status === 201) {
         Alert.Alert('info', response_createCoupon.data.message)
       }
