@@ -33,7 +33,7 @@ export default function OrderForm() {
         let discountTotal = 0;
         order?.orderItems.forEach((orderItem) => {
             subTotal += orderItem.original_price;
-            discountTotal += (orderItem.original_price * (orderItem.discount / 100));
+            discountTotal += (orderItem.original_price * (orderItem.promotion_percent / 100));
         });
 
         return {
@@ -116,7 +116,7 @@ export default function OrderForm() {
                         <h3 className='text-[#84a3be]'>{orderItem.title}</h3>
                         <h3 className='mt-5'>{(orderItem.original_price).toLocaleString()} vnđ </h3>
                         <h3>Số lượng: x{orderItem.quantity}</h3>
-                        <h3>Giảm giá: - {orderItem.discount}%</h3>
+                        <h3>Giảm giá:  {orderItem.promotion_percent != null ? `- ${orderItem.promotion_percent} %` : '0' }</h3>
                     </div>
                     <div className='col-span-1'>
                         <h3 className='text-[#84a3be]'>Địa chỉ</h3>

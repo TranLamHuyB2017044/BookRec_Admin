@@ -113,8 +113,7 @@ export default function CreateCoupon({ setTypeDiscount }) {
         Alert.Alert('info', response_createCoupon.data.message)
       }
     } catch (error) {
-      Alert.Alert('error', error.data.message)
-
+      Alert.Alert('error', error)
       console.log(error)
     }
   }
