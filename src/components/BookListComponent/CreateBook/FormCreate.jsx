@@ -9,6 +9,8 @@ import RestInfo from './RestInfo';
 import Loading from '../../LoadingComponent/Loading';
 import MyAlert from '../../AlertComponent/Alert';
 import { UserRequest } from '../../../service/Request'
+
+
 const schema = yup.object().shape({
     title: yup.string().required("Tên sách là bắt buộc"),
     short_description: yup.string().required("Mô tả chung là bắt buộc"),
@@ -50,10 +52,10 @@ export default function FormCreate({ showToggle }) {
             setLoading(true);
             const rs = await UserRequest.post(`/purchase/${user_id}`,data.books);
             if (rs.status === 200) {
-                MyAlert.Alert('success', 'Nhập hàng thành công');
                 setTimeout(() => {
                     setLoading(false);
-                    showToggle()
+                    showToggle();
+                    MyAlert.Alert('success', 'Nhập hàng thành công');
                 }, 2000)
             }
         } catch (error) {

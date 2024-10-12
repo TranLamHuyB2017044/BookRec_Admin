@@ -59,20 +59,7 @@ export default function BookFormLeft({onChange, errors, register, index}) {
                     <p className='text-red-500 mt-2 text-xl'>{errors.publication_date?.message}</p>
                 </div>
             </div>
-            <div className='form-group  flex gap-2 my-6'>
-                <label className='min-w-[150px] ' htmlFor="avg_rating">Số sao đánh giá (*)</label>
-                <div className=''>
-                    <input
-                        className='w-[250px] rounded-md h-[35px] pl-2 border border-black'
-                        type="number"
-                        id='avg_rating'
-                        onChange={(e) => onChange(index, e)}
-                        placeholder='1 -> 5'
-                        {...register(`books.${index}.avg_rating`)}
-                    />
-                    <p className='text-red-500 mt-2 text-xl'>{errors.avg_rating?.message}</p>
-                </div>
-            </div>
+
             {/* <div className='form-group  flex gap-2 my-6'>
                 <label className='min-w-[150px] ' htmlFor="coverBooks">Hình ảnh về sách (*)</label>
                 <div className=''>

@@ -123,7 +123,7 @@ export default function Booklist({ isSidebarOpen }) {
                         if (response.status === 200) {
                             const deleteBook = await UserRequest.delete(`/collection/${id}`)
                             if (deleteBook.status === 200) {
-                                MyAlert.Alert('success', `${deleteBook.data.message}`);
+                                MyAlert.Alert('success', `Xóa thành công`);
                                 setQuery('')
                                 window.location.reload()
                             } else {
@@ -137,7 +137,7 @@ export default function Booklist({ isSidebarOpen }) {
                 }
             })
             .catch(error => {
-                const errorMessage = error.response?.data || "An error occurred.";
+                const errorMessage = error.response?.data || "Có lỗi xảy ra vui lòng thử lại sau.";
                 MyAlert.Alert("error", errorMessage);
             });
 
