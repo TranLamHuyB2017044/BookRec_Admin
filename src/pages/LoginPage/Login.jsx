@@ -47,24 +47,24 @@ export default function Login() {
     }
   }
   return (
-    <div className='flex bg-[#959aa0]'>
-      <div className='basis-1/2'>
+    <div className='flex flex-col md:flex-row bg-[#959aa0] h-screen '>
+      <div className='basis-1/2 hidden md:block'>
         <img className='h-screen' src={loginIMG} alt="login-img" />
       </div>
       <div className='basis-1/2 my-auto'>
         <h1 className='flex items-center justify-center text-6xl font-bold text-[#981d20]'>Admin Book Store</h1>
-        {loading === false ? <form onSubmit={handleSubmit(onLogin)} className='p-8 flex flex-col items-center '>
+        {loading === false ? <form onSubmit={handleSubmit(onLogin)} className=' p-8 flex flex-col items-center '>
           <div className='flex flex-col my-6'>
             <label htmlFor="email " className='text-white font-bold'>Email</label>
-            <input className={` pl-2 w-[350px] h-[42px] border border-[#ccc] my-3 rounded-lg focus:outline-none ${errors.email ? 'border-[#ff0000]' : 'border-[#ccc]'}`} type='email' id="email" {...register("email", { required: true })} />
+            <input className={` pl-2 s:w-full md:w-[350px] h-[42px] border border-[#ccc] my-3 rounded-lg focus:outline-none ${errors.email ? 'border-[#ff0000]' : 'border-[#ccc]'}`} type='email' id="email" {...register("email", { required: true })} />
             <p className='text-red-600'>{errors.email?.message}</p>
           </div>
           <div className='flex flex-col my-6'>
             <label htmlFor="Password " className='text-white font-bold'>Mật Khẩu</label>
-            <input className={` pl-2 w-[350px] h-[42px] border border-[#ccc] my-3 rounded-lg focus:outline-none ${errors.password ? 'border-[#ff0000]' : 'border-[#ccc]'}`} id="Password" {...register("password", { required: true })} type="password" />
+            <input className={` pl-2 s:w-full md:w-[350px] h-[42px] border border-[#ccc] my-3 rounded-lg focus:outline-none ${errors.password ? 'border-[#ff0000]' : 'border-[#ccc]'}`} id="Password" {...register("password", { required: true })} type="password" />
             <p className='text-red-600'>{errors.password?.message}</p>
           </div>
-          <button className='flex flex-col mt-6 h-[42px] bg-[#981d20] hover:bg-[#b44a4c] w-[350px] rounded-lg justify-center items-center cursor-pointer font-bold text-white' type='submit' onKeyDown={enterLogin}>ĐĂNG NHẬP</button>
+          <button className='flex flex-col mt-6 h-[42px] bg-[#981d20] hover:bg-[#b44a4c] px-20 md:w-[350px] rounded-lg justify-center items-center cursor-pointer font-bold text-white' type='submit' onKeyDown={enterLogin}>ĐĂNG NHẬP</button>
         </form>
           : <Loading />}
       </div>

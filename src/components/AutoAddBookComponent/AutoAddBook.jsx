@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import myAlert from '../AlertComponent/Alert';
@@ -7,7 +7,6 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import DateUtils from '../../util/date_util.js';
 
 
 export default function AutoAddBookComponent() {
@@ -18,15 +17,15 @@ export default function AutoAddBookComponent() {
 
     const [bookDetails, setBookDetails] = useState({
         title: '',
-        author: '',
-        manufacturer: '',
+        author_name: '',
+        manufacturer_name: '',
         original_price: '',
-        description: '',
-        page_count: '',
-        publish_date: '',
+        short_description: '',
+        pages: '',
+        publication_date: '',
         category: '',
-        quantity: '',
-        publisher: ''
+        inStock: '',
+        publisher_name: ''
     });
 
     const handleImageChange = (event) => {
@@ -51,9 +50,8 @@ export default function AutoAddBookComponent() {
 
     const parseBookDetails = (text) => {
         const trimmedText = text.trim();
-
         const authorRegex = /\b(?:by|tác giả|written by|author)\s*:\s*([A-ZĐ][a-zA-Zđếáàảâấầậăắằặơớờợýỳỵỹưứừựùúûụ]+(?:\s+[A-ZĐa-záàạảâấầặăắằặẽèéêễễểệýùúỹỵüđ]+)*)/i;
-        const publisherRegex = /\b(?:nhà\s*xuất\s*bản|nxb|publisher|xuất\s*bản|nhà\s*phát\s*hành|đơn\s*vị\s*phát\s*hành)\s*:\s*([^\n]+)/i;
+        const publisherRegex = /\b(?:nhà\s*xuất\s*bản|nxb|publisher|xuất\s*bản|nhà\s*phát\s*hành|đơn\s*vị\s*phát\s*hành)\s*:\s*([^\n]+)/i;
         const priceRegex = /\b(?:giá|price|giá bán):?\s*([\d.,]+)\b/i;
         const pageCountRegex = /\b(?:số trang|page count|pages)\s*:\s*(\d+)(?:\.\s*tr)?\b/i;
         const publishDateRegex = /\b(?:ngày xuất bản|publish date|release date)\s*:\s*(\d{1,2}\/\d{1,2}\/\d{4})\b/i;
@@ -187,16 +185,15 @@ export default function AutoAddBookComponent() {
 
     const schema = yup.object().shape({
         title: yup.string().required("Tên sách là bắt buộc"),
-        description: yup.string().required("Mô tả chung là bắt buộc"),
+        short_description: yup.string().required("Mô tả chung là bắt buộc"),
         category: yup.string().required("Thể loại sách là bắt buộc"),
-        author: yup.string().required("Tên tác giả là bắt buộc"),
-        publisher: yup.string().required("Tên nhà cung cấp là bắt buộc"),
-        manufacturer: yup.string().required("Tên nhà xuất bản là bắt buộc"),
+        author_name: yup.string().required("Tên tác giả là bắt buộc"),
+        publisher_name: yup.string().required("Tên nhà cung cấp là bắt buộc"),
+        manufacturer_name: yup.string().required("Tên nhà xuất bản là bắt buộc"),
         original_price: yup.string().required("giá bán là bắt buộc"),
-        publish_date: yup.string().required("Ngày xuất bản là bắt buộc"),
+        publication_date: yup.date().required('Ngày xuất bản là bắt buộc').max(new Date(), 'Ngày xuất bản không thể là tương lai'),
         inStock: yup.string().required("Tồn kho là bắt buộc"),
-        quantity_sold: yup.string().required("Số lượng đã bán là bắt buộc"),
-        page_count: yup.string().required("Số trang là bắt buộc"),
+        pages: yup.string().required("Số trang là bắt buộc"),
     });
 
 
@@ -204,26 +201,25 @@ export default function AutoAddBookComponent() {
 
 
     const onSubmit = async () => {
-        const form_data = bookDetails;
+        const form_data = { ...bookDetails, };
 
-        console.log(form_data)
-        // try {
-        //     setLoading(true);
-        //     const rs = await UserRequest.post(`/purchase/${user_id}`, data);
-        //     if (rs.status === 200) {
-        //         myAlert.Alert('success', 'Nhập hàng thành công');
-        //         setTimeout(() => {
-        //             setLoading(false);
-        //         }, 2000)
-        //     }
-        // } catch (error) {
-        //     setLoading(false);
-        //     myAlert.Alert('error', 'Có lỗi xảy ra');
-        //     console.log(error.message);
-        // }
+        try {
+            setLoading(true);
+            const rs = await UserRequest.post(`/purchase/${user_id}`, form_data);
+            if (rs.status === 200) {
+                myAlert.Alert('success', 'Nhập hàng thành công');
+                setTimeout(() => {
+                    setLoading(false);
+                }, 2000)
+            }
+        } catch (error) {
+            setLoading(false);
+            myAlert.Alert('error', 'Có lỗi xảy ra');
+            console.log(error.message);
+        }
     };
 
-    const { register, handleSubmit, setValue, trigger, formState: { errors } } = useForm({
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
         defaultValues: bookDetails
     })
@@ -236,7 +232,7 @@ export default function AutoAddBookComponent() {
                     <input type="file" name='coverImages' onChange={handleImageChange} multiple />
                     <Link
                         to='/'
-                        className='mr-20 active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-2 rounded-md 
+                        className='active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-2 rounded-md 
                         border border-white bg-[dodgerblue] text-white flex items-center w-[120px] gap-2 justify-center'>
                         Trở về
                     </Link>
@@ -289,155 +285,155 @@ export default function AutoAddBookComponent() {
                     Trích xuất thông tin
                 </button>
             </form>
+            <div className='bg-white rounded-2xl mx-16 my-12 py-8 mt-48 '>
+                <form onSubmit={handleSubmit(onSubmit)} className="px-20">
+                    <div className=" mb-4 pb-4">
+                        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label htmlFor='title' className='block font-semibold'>Tên sách:</label>
+                                <input
+                                    id='title'
+                                    type="text"
+                                    value={bookDetails.title}
+                                    onChange={(e) => handleInputChange('title', e.target.value)}
+                                    className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    {...register('title', { onChange: (e) => handleInputChange('title', e.target.value) })}
+                                />
+                                {errors.title && <span className="text-red-500 mt-4 text-[13px]">{errors.title.message}</span>}
+                            </div>
+                            <div>
+                                <label htmlFor='author_name' className='block font-semibold'>Tác giả:</label>
+                                <input
+                                    type="text"
+                                    id='author_name'
+                                    value={bookDetails.author_name}
+                                    onChange={(e) => handleInputChange('author_name', e.target.value)}
+                                    className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    {...register('author_name', { onChange: (e) => handleInputChange('author_name', e.target.value) })}
 
-            <form onSubmit={handleSubmit(onSubmit)} className="mt-48 px-20">
-                <div className="border-b border-gray-300 mb-4 pb-4">
-                    <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label htmlFor='title' className='block font-semibold'>Tên sách:</label>
-                            <input
-                                id='title'
-                                type="text"
-                                value={bookDetails.title}
-                                onChange={(e) => handleInputChange('title', e.target.value)}
-                                className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                {...register('title', { onChange: (e) => handleInputChange('title', e.target.value) })}
-                            />
-                            {errors.title && <span className="text-red-500 mt-4 text-[13px]">{errors.title.message}</span>}
+                                />
+                                {errors.author_name && <span className="text-red-500 mt-4 text-[13px]">{errors.author_name.message}</span>}
+
+                            </div>
+                            <div>
+                                <label htmlFor='manufacturer_name' className='block font-semibold'>Nhà xuất bản:</label>
+                                <input
+                                    type="text"
+                                    id='manufacturer_name'
+                                    value={bookDetails.manufacturer_name}
+                                    onChange={(e) => handleInputChange('manufacturer_name', e.target.value)}
+                                    className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    {...register('manufacturer_name', { onChange: (e) => handleInputChange('manufacturer_name', e.target.value) })}
+
+                                />
+                                {errors.manufacturer_name && <span className="text-red-500 mt-4 text-[13px]">{errors.manufacturer_name.message}</span>}
+                            </div>
+                            <div>
+                                <label htmlFor='original_price' className='block font-semibold'>Giá gốc:</label>
+                                <input
+                                    type="number"
+                                    id='original_price'
+                                    value={bookDetails.original_price}
+                                    onChange={(e) => handleInputChange('original_price', e.target.value)}
+                                    className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    {...register('original_price', { onChange: (e) => handleInputChange('original_price', e.target.value) })}
+
+                                />
+                                {errors.original_price && <span className="text-red-500 mt-4 text-[13px]">{errors.original_price.message}</span>}
+
+                            </div>
+                            <div className="md:col-span-2">
+                                <label htmlFor='short_description' className='block font-semibold'>Mô tả:</label>
+                                <textarea
+                                    value={bookDetails.short_description}
+                                    id='short_description'
+                                    onChange={(e) => handleInputChange('short_description', e.target.value)}
+                                    className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    rows="4"
+                                    {...register('short_description', { onChange: (e) => handleInputChange('short_description', e.target.value) })}
+
+                                />
+                                {errors.short_description && <span className="text-red-500 mt-4 text-[13px]">{errors.short_description.message}</span>}
+
+                            </div>
+                            <div>
+                                <label htmlFor='pages' className='block font-semibold'>Số trang:</label>
+                                <input
+                                    type="number"
+                                    id='pages'
+                                    value={bookDetails.pages}
+                                    onChange={(e) => handleInputChange('pages', e.target.value)}
+                                    className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    {...register('pages', { onChange: (e) => handleInputChange('pages', e.target.value) })}
+
+                                />
+                                {errors.pages && <span className="text-red-500 mt-4 text-[13px]">{errors.pages.message}</span>}
+
+                            </div>
+                            <div>
+                                <label htmlFor='publication_date' className='block font-semibold'>Ngày xuất bản:</label>
+                                <input
+                                    type="date"
+                                    id='publication_date'
+                                    value={bookDetails.publication_date || ''}
+                                    onChange={(e) => handleInputChange('publication_date', e.target.value)}
+                                    className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    {...register('publication_date', { onChange: (e) => handleInputChange('publication_date', e.target.value) })}
+
+                                />
+                                {errors.publication_date && <span className="text-red-500 mt-4 text-[13px]">{errors.publication_date.message}</span>}
+
+                            </div>
+                            <div>
+                                <label htmlFor='category' className='block font-semibold'>Thể loại:</label>
+                                <input
+                                    type="text"
+                                    value={bookDetails.category || ''}
+                                    onChange={(e) => handleInputChange('category', e.target.value)}
+                                    className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    {...register('category', { onChange: (e) => handleInputChange('category', e.target.value) })}
+
+                                />
+                                {errors.category && <span className="text-red-500 mt-4 text-[13px]">{errors.category.message}</span>}
+
+                            </div>
+                            <div>
+                                <label htmlFor='inStock' className='block font-semibold'>Số lượng:</label>
+                                <input
+                                    type="number"
+                                    value={bookDetails.inStock || ''}
+                                    onChange={(e) => handleInputChange('inStock', e.target.value)}
+                                    className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    {...register('inStock', { onChange: (e) => handleInputChange('inStock', e.target.value) })}
+
+                                />
+                                {errors.inStock && <span className="text-red-500 mt-4 text-[13px]">{errors.inStock.message}</span>}
+
+                            </div>
+                            <div>
+                                <label htmlFor='publisher_name' className='block font-semibold'>Nhà cung cấp:</label>
+                                <input
+                                    type="text"
+                                    id='publisher_name'
+                                    value={bookDetails.publisher_name || ''}
+                                    onChange={(e) => handleInputChange('publisher_name', e.target.value)}
+                                    className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    {...register('publisher_name', { onChange: (e) => handleInputChange('publisher_name', e.target.value) })}
+
+                                />
+                                {errors.publisher_name && <span className="text-red-500 mt-4 text-[13px]">{errors.publisher_name.message}</span>}
+
+                            </div>
                         </div>
-                        <div>
-                            <label htmlFor='author' className='block font-semibold'>Tác giả:</label>
-                            <input
-                                type="text"
-                                id='author'
-                                value={bookDetails.author}
-                                onChange={(e) => handleInputChange('author', e.target.value)}
-                                className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                {...register('author', { onChange: (e) => handleInputChange('author', e.target.value) })}
 
-                            />
-                            {errors.author && <span className="text-red-500 mt-4 text-[13px]">{errors.author.message}</span>}
-
-                        </div>
-                        <div>
-                            <label htmlFor='manufacturer' className='block font-semibold'>Nhà xuất bản:</label>
-                            <input
-                                type="text"
-                                id='manufacturer'
-                                value={bookDetails.manufacturer}
-                                onChange={(e) => handleInputChange('manufacturer', e.target.value)}
-                                className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                {...register('manufacturer', { onChange: (e) => handleInputChange('manufacturer', e.target.value) })}
-
-                            />
-                            {errors.manufacturer && <span className="text-red-500 mt-4 text-[13px]">{errors.manufacturer.message}</span>}
-                        </div>
-                        <div>
-                            <label htmlFor='original_price' className='block font-semibold'>Giá gốc:</label>
-                            <input
-                                type="number"
-                                id='original_price'
-                                value={bookDetails.original_price}
-                                onChange={(e) => handleInputChange('original_price', e.target.value)}
-                                className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                {...register('original_price', { onChange: (e) => handleInputChange('original_price', e.target.value) })}
-
-                            />
-                            {errors.original_price && <span className="text-red-500 mt-4 text-[13px]">{errors.original_price.message}</span>}
-
-                        </div>
-                        <div className="md:col-span-2">
-                            <label htmlFor='description' className='block font-semibold'>Mô tả:</label>
-                            <textarea
-                                value={bookDetails.description}
-                                id='description'
-                                onChange={(e) => handleInputChange('description', e.target.value)}
-                                className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                rows="4"
-                                {...register('description', { onChange: (e) => handleInputChange('description', e.target.value) })}
-
-                            />
-                            {errors.description && <span className="text-red-500 mt-4 text-[13px]">{errors.description.message}</span>}
-
-                        </div>
-                        <div>
-                            <label htmlFor='page_count' className='block font-semibold'>Số trang:</label>
-                            <input
-                                type="number"
-                                id='page_count'
-                                value={bookDetails.page_count}
-                                onChange={(e) => handleInputChange('page_count', e.target.value)}
-                                className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                {...register('page_count', { onChange: (e) => handleInputChange('page_count', e.target.value) })}
-
-                            />
-                            {errors.page_count && <span className="text-red-500 mt-4 text-[13px]">{errors.page_count.message}</span>}
-
-                        </div>
-                        <div>
-                            <label htmlFor='publish_date' className='block font-semibold'>Ngày xuất bản:</label>
-                            <input
-                                type="date"
-                                id='publish_date'
-                                value={bookDetails.publish_date || ''}
-                                onChange={(e) => handleInputChange('publish_date', e.target.value)}
-                                className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                {...register('publish_date', { onChange: (e) => handleInputChange('publish_date', e.target.value) })}
-
-                            />
-                            {errors.publish_date && <span className="text-red-500 mt-4 text-[13px]">{errors.publish_date.message}</span>}
-
-                        </div>
-                        <div>
-                            <label htmlFor='category' className='block font-semibold'>Thể loại:</label>
-                            <input
-                                type="text"
-                                value={bookDetails.category || ''}
-                                onChange={(e) => handleInputChange('category', e.target.value)}
-                                className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                {...register('category', { onChange: (e) => handleInputChange('category', e.target.value) })}
-
-                            />
-                            {errors.category && <span className="text-red-500 mt-4 text-[13px]">{errors.category.message}</span>}
-
-                        </div>
-                        <div>
-                            <label htmlFor='quantity' className='block font-semibold'>Số lượng:</label>
-                            <input
-                                type="number"
-                                value={bookDetails.quantity || ''}
-                                onChange={(e) => handleInputChange('quantity', e.target.value)}
-                                className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                {...register('quantity', { onChange: (e) => handleInputChange('quantity', e.target.value) })}
-
-                            />
-                            {errors.quantity && <span className="text-red-500 mt-4 text-[13px]">{errors.quantity.message}</span>}
-
-                        </div>
-                        <div>
-                            <label htmlFor='publisher' className='block font-semibold'>Nhà cung cấp:</label>
-                            <input
-                                type="text"
-                                id='publisher'
-                                value={bookDetails.publisher || ''}
-                                onChange={(e) => handleInputChange('publisher', e.target.value)}
-                                className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                {...register('publisher', { onChange: (e) => handleInputChange('publisher', e.target.value) })}
-
-                            />
-                            {errors.publisher && <span className="text-red-500 mt-4 text-[13px]">{errors.publisher.message}</span>}
-
+                        <div className="mt-5">
+                            <button type='submit' className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">
+                                Nhập hàng
+                            </button>
                         </div>
                     </div>
-
-                    <div className="mt-5">
-                        <button type='submit' onClick={onSubmit} className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">
-                            Nhập hàng
-                        </button>
-                    </div>
-                </div>
-            </form>
-
+                </form>
+            </div>
         </div>
     );
 }
