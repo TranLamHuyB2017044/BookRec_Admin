@@ -174,7 +174,7 @@ export default function BookAnalysis() {
                   style={{ marginTop: '20px', marginBottom: '20px', width: "35%", alignContent: "center", marginLeft: '20px', }}
                 />
                 <Button size="large" sx={{height: '50px'}} variant="outlined">Dự đoán</Button>
-
+                  
               </div>
             </div>
           </div>

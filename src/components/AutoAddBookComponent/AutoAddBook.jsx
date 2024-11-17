@@ -49,13 +49,16 @@ export default function AutoAddBookComponent() {
     };
 
     const parseBookDetails = (text) => {
-        const trimmedText = text.trim();
-        const authorRegex = /\b(?:by|tác giả|written by|author)\s*:\s*([A-ZĐ][a-zA-Zđếáàảâấầậăắằặơớờợýỳỵỹưứừựùúûụ]+(?:\s+[A-ZĐa-záàạảâấầặăắằặẽèéêễễểệýùúỹỵüđ]+)*)/i;
-        const publisherRegex = /\b(?:nhà\s*xuất\s*bản|nxb|publisher|xuất\s*bản|nhà\s*phát\s*hành|đơn\s*vị\s*phát\s*hành)\s*:\s*([^\n]+)/i;
+        const trimmedText = text.trim().toLowerCase();
+
+        const titleRegex = /[a-zàáảãạđêếềệíìóòỏõọôốồộớờợúùủũụýỳỵ\s]+/g;
+        const authorRegex = /\b(?:by|tác giả|tac gia|written by|author)\s*(của\s*)?([a-zàáảãạđêếềệíìóòỏõọôốồộớờợúùủũụýỳỵỹưứừự]+(?:\s+[a-zàáảãạđêếềệíìóòỏõọôốồộớờợúùủũụýỳỵỹưứừự]+)*)/i;
+        const publisherRegex = /\b(?:nhà xuất bản|nxb|publication|publisher)\b/i;
         const priceRegex = /\b(?:giá|price|giá bán):?\s*([\d.,]+)\b/i;
         const pageCountRegex = /\b(?:số trang|page count|pages)\s*:\s*(\d+)(?:\.\s*tr)?\b/i;
-        const publishDateRegex = /\b(?:ngày xuất bản|publish date|release date)\s*:\s*(\d{1,2}\/\d{1,2}\/\d{4})\b/i;
-
+        const publishDateRegex = /\b(?:ngày xuất bản|publish date|release date|publication date)\s*:\s*(\d{1,2}\/\d{1,2}\/\d{4})\b/i;
+        const descriptionRegex = /([a-zàáảãạđêếềệíìóòỏõọôốồộớờợúùủũụýỳỵ\s,.!?-]{30,})/g;
+        const categoryRegex = /\b(?:thể loại|category|loại|genre)\s*:\s*([a-zàáảãạđêếềệíìóòỏõọôốồộớờợúùủũụýỳỵ\s]+(?:\s*,\s*[a-zàáảãạđêếềệíìóòỏõọôốồộớờợúùủũụýỳỵ\s]+)*)/i;
         let title = 'Unknown Title';
         let author = 'Unknown Author';
         let publisher = 'Unknown Publisher';
@@ -63,56 +66,50 @@ export default function AutoAddBookComponent() {
         let description = 'No Description';
         let page_count = 'Unknown Page Count';
         let publish_date = 'Unknown Publish Date';
+        let category = 'Unknown Category';
 
-        const lines = trimmedText.split('\n').map(line => line.trim());
-        let combinedText = lines.join(' ');
+        const combinedText = trimmedText.replace(/[^a-zàáảãạđêếềệíìóòỏõọôốồộớờợúùủũụýỳỵ\s\d,.!?-]/g, '');
 
-        // Tìm tác giả
         const authorMatch = combinedText.match(authorRegex);
         if (authorMatch) {
-            author = authorMatch[1].trim().replace(/\b\w/g, char => char.toUpperCase());
+            author = authorMatch[2].trim().replace(/\b\w/g, char => char.toUpperCase());
         }
 
-        // Tìm nhà xuất bản
         const publisherMatch = combinedText.match(publisherRegex);
         if (publisherMatch) {
-            publisher = publisherMatch[1].trim();
-            const publisherText = publisherMatch[0];
-            combinedText = combinedText.replace(publisherText, '').trim();
+            publisher = publisherMatch[0].trim();
         }
 
-        // Tìm giá
         const priceMatch = combinedText.match(priceRegex);
         if (priceMatch) {
             original_price = priceMatch[1].trim();
         }
 
-        // Tìm số trang
         const pageCountMatch = combinedText.match(pageCountRegex);
         if (pageCountMatch) {
             page_count = pageCountMatch[1].trim();
         }
 
-        // Tìm ngày xuất bản
         const publishDateMatch = combinedText.match(publishDateRegex);
         if (publishDateMatch) {
             publish_date = publishDateMatch[1].trim();
         }
 
-        // Tìm mô tả
-        const paragraphs = combinedText.split(/[.!?]\s+/);
-        if (paragraphs.length > 0) {
-            description = paragraphs.reduce((longest, current) => {
-                return current.length > longest.length ? current : longest;
-            }, '').trim();
+        const titleMatch = combinedText.match(titleRegex);
+        if (titleMatch) {
+            title = titleMatch[0].trim();
         }
 
-        // Tìm tiêu đề
-        const titleMatches = combinedText.match(/([A-Za-z0-9ÀÁẢÃẠĐÊẾỀỆÍÌÓÒỎÕỌÔỐỒỘỚỜỢÚÙỦŨỤÝỲỴ\s.,;:!?()\-]+)/g);
-        if (titleMatches) {
-            title = titleMatches.reduce((longest, current) => {
-                return current.length > longest.length ? current : longest;
-            }, '').trim();
+        const genreMatch = combinedText.match(categoryRegex);
+        if (genreMatch) {
+            category = genreMatch[1].trim().replace(/\b\w/g, char => char.toUpperCase());
+        }
+
+        const descriptionMatches = combinedText.match(descriptionRegex);
+        if (descriptionMatches) {
+            description = descriptionMatches.reduce((longest, current) =>
+                current.length > longest.length ? current : longest, ""
+            ).trim();
         }
 
         return {
@@ -122,9 +119,11 @@ export default function AutoAddBookComponent() {
             original_price,
             description,
             page_count,
-            publish_date
+            publish_date,
+            category,
         };
     };
+
 
     const handleSubmitDetectBook = async (event) => {
         event.preventDefault();
@@ -146,25 +145,27 @@ export default function AutoAddBookComponent() {
 
                 const combinedText = response.data.results.map(result => result.text).join(' ');
 
-                const { title, author, manufacturer, original_price, description, page_count, publish_date } = parseBookDetails(combinedText);
+                const { title, author, publisher, original_price, description, page_count, publish_date, category } = parseBookDetails(combinedText);
 
                 setBookDetails({
                     title,
                     author,
-                    manufacturer,
+                    publisher,
                     original_price,
                     description,
                     page_count,
-                    publish_date
+                    publish_date,
+                    category
                 });
 
                 setValue('title', title);
-                setValue('author', author);
-                setValue('manufacturer', manufacturer);
+                setValue('author_name', author);
+                setValue('manufacturer_name', publisher);
                 setValue('original_price', original_price);
-                setValue('description', description);
-                setValue('page_count', page_count);
-                setValue('publish_date', publish_date);
+                setValue('short_description', description);
+                setValue('pages', page_count);
+                setValue('publication_date', publish_date);
+                setValue('category', category);
 
 
             }

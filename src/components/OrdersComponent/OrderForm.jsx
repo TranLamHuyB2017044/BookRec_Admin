@@ -46,17 +46,37 @@ export default function OrderForm() {
     const handleUpdateStatus = (e) => {
         const status = e.target.value
         const orderId = params.orderId
-        const convert_status = status === 'accepted' ? 'đã thanh toán' : 'hủy đơn hàng'
-        const convert_status_to_uppercase = status === 'accepted' ? 'Đã thanh toán' : 'Hủy đơn hàng'
-        const convert_status_to_update = status === 'accepted' ? 'Đã thanh toán' : 'Đã hủy'
-        if(status === 'Chỉnh sửa'){
-            return false
+    
+        const convert_status = 
+            status === 'Đang chuẩn bị hàng' ? 'Đang chuẩn bị hàng' : 
+            status === 'Đơn hàng đang được giao' ? 'Đơn hàng đang được giao' : 
+            status === 'Đã thanh toán' ? 'Đã thanh toán' : 
+            status === 'Đã giao' ? 'Đã giao' : 
+            'Chưa xác định';
+    
+        const convert_status_to_uppercase = 
+            status === 'Đang chuẩn bị hàng' ? 'Đang chuẩn bị hàng' :
+            status === 'Đơn hàng đang được giao' ? 'Đơn hàng đang được giao' :
+            status === 'Đã thanh toán' ? 'Đã thanh toán' :
+            status === 'Đã giao' ? 'Đã giao' :
+            'Không hợp lệ';
+    
+        const convert_status_to_update = 
+            status === 'Đang chuẩn bị hàng' ? 'Đang chuẩn bị hàng' :
+            status === 'Đơn hàng đang được giao' ? 'Đơn hàng đang được giao' :
+            status === 'Đã thanh toán' ? 'Đã thanh toán' :
+            status === 'Đã giao' ? 'Đã giao' : 
+            'Không hợp lệ';
+    
+        if (status === 'Chỉnh sửa') {
+            return false;
         }
-        myAlert.Confirm(convert_status_to_uppercase, 'question', 'Xác nhận '+ convert_status + ' cho đơn hàng này', 'Có', 'Thoát')
+    
+        myAlert.Confirm(convert_status_to_uppercase, 'question', 'Xác nhận ' + convert_status + ' cho đơn hàng này', 'Có', 'Thoát')
             .then(async (result) => {
                 if (result.value) {
                     const { value: password } = await Swal.fire({
-                        title: "Vui lòng nhập password của bạn để xác nhận " + convert_status ,
+                        title: "Vui lòng nhập password của bạn để xác nhận " + convert_status,
                         input: "password",
                         inputLabel: "Password",
                         inputPlaceholder: "Enter your password",
@@ -66,38 +86,42 @@ export default function OrderForm() {
                             autocorrect: "off"
                         }
                     });
+    
                     if (password) {
                         const response = await UserRequest.post('/user/login/admin', { email: user.email, password: password });
                         if (response.status === 200) {
-                            await UserRequest.put(`/order/detail/${orderId}`, {status: convert_status_to_update})
-                            myAlert.Alert('success', 'Cập nhật trạng thái đơn hàng thành công')
-                            navigate('/manageOrders')
+                            await UserRequest.put(`/order/detail/${orderId}`, { status: convert_status_to_update });
+                            myAlert.Alert('success', 'Cập nhật trạng thái đơn hàng thành công');
+                            navigate('/manageOrders');
                         } else {
                             Swal.fire(`Sai mật khẩu`);
                         }
                     }
-
+    
                 }
             })
             .catch(error => {
                 const errorMessage = error.response?.data || "An error occurred.";
                 myAlert.Alert("error", errorMessage);
             });
-
     }
+    
     return (
-        <div  className='mb-[60px]'>
+        <div className='mb-[60px]'>
             <div className='flex justify-between gap-2 mt-16 ml-12 items-center'>
                 <div className='flex gap-2'>
                     <p className='text-[#5c6871]'>Thời gian đặt</p>
                     <p>{order?.order_date.substring(0, order.order_date.indexOf('T'))}</p>
                 </div>
                 <div className='flex gap-8 '>
-                    {order?.payment_status === 'Chưa thanh toán' && <div className="relative inline-block text-left ">
+                    {order?.payment_status !== 'Đã giao' && <div className="relative inline-block text-left ">
                         <select onChange={handleUpdateStatus} id="edit" className='px-2 py-3 rounded-md'>
                             <option defaultChecked >Chỉnh sửa</option>
-                            <option value="accepted">Đã thanh toán</option>
-                            <option value="rejected">Hủy đơn hàng</option>
+                            <option value="Đang chuẩn bị hàng">Đang chuẩn bị hàng</option>
+                            <option value="Đơn hàng đang được giao">Đơn hàng đang được giao</option>
+                            <option value="Đã thanh toán">Đã thanh toán</option>
+                            <option value="Đã giao">Đã giao</option>
+
                         </select>
                     </div>}
                     <Link to='/manageOrders'
@@ -116,7 +140,7 @@ export default function OrderForm() {
                         <h3 className='text-[#84a3be]'>{orderItem.title}</h3>
                         <h3 className='mt-5'>{(orderItem.original_price).toLocaleString()} vnđ </h3>
                         <h3>Số lượng: x{orderItem.quantity}</h3>
-                        <h3>Giảm giá:  {orderItem.promotion_percent != null ? `- ${orderItem.promotion_percent} %` : '0' }</h3>
+                        <h3>Giảm giá:  {orderItem.promotion_percent != null ? `- ${orderItem.promotion_percent} %` : '0'}</h3>
                     </div>
                     <div className='col-span-1'>
                         <h3 className='text-[#84a3be]'>Địa chỉ</h3>
