@@ -158,7 +158,7 @@ export default function Booklist({ isSidebarOpen }) {
                     {showToggle === false && <Link to='/manageBookOrders' className={'active:translate-y-1 hover:bg-gradient-to-r from-green-500 to-green-400 px-4 py-2 rounded-md border border-white bg-green-500 text-white flex items-center w-[150px] gap-2 justify-center'}
                     ><InventoryOutlinedIcon />Xem hóa đơn</Link>}
                     {showToggle === false && <Link to='/autoAddBook' className={'active:translate-y-1 hover:bg-gradient-to-r from-sky-400 to-sky-300 px-4 py-2 rounded-md border border-white bg-sky-400 text-white flex items-center w-fit gap-2 justify-center'}
-                    ><InventoryOutlinedIcon />Nhập sách bán tự động</Link>}
+                    ><InventoryOutlinedIcon />Trích suất thông tin sách</Link>}
                 </div>
                 <div style={showToggle ? { display: 'none' } : { display: 'flex' }} className='flex items-center gap-2 relative' >
                     <div className='absolute left-1 top-[3px] text-[dodgerblue]'>

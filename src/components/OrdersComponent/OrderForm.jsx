@@ -106,6 +106,26 @@ export default function OrderForm() {
             });
     }
     
+
+    const getPaymentStatusClass = (status) => {
+        switch (status) {
+            case 'Đã tạo đơn hàng':
+                return 'text-gray-500';
+            case 'Đang chuẩn bị hàng':
+                return 'text-orange-500';
+            case 'Đơn hàng đang được giao':
+                return 'text-yellow-500';
+            case 'Đã thanh toán':
+                return 'text-[dodgerblue]';
+            case 'Đã giao':
+                return 'text-green-500';
+            case 'Đã hủy':
+                return 'text-red-500';
+            default:
+                return 'text-black';
+        }
+    };
+
     return (
         <div className='mb-[60px]'>
             <div className='flex justify-between gap-2 mt-16 ml-12 items-center'>
@@ -149,7 +169,7 @@ export default function OrderForm() {
                     <div className='col-span-1'>
                         <h3 className='text-[#84a3be]'>Trạng thái thanh toán</h3>
                         <div className='mt-5 flex justify-between items-center '>
-                            <p className={order.payment_status === 'Chưa thanh toán' ? 'text-[dodgerblue] ' : order.payment_status === 'Đã thanh toán' ? 'text-green-500' : 'text-red-500'}>{order.payment_status}</p>
+                            <p className={getPaymentStatusClass(order.payment_status)}>{order.payment_status}</p>
 
                         </div>
                     </div>

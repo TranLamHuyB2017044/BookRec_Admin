@@ -224,7 +224,7 @@ export default function PromotionTable({ isSidebarOpen, tabBarValue }) {
     }
 
 
-    
+
     const handleUpdateCouponStatusById = (e, coupon_id) => {
         couponRows.map((coupon_item) => {
             const update_status = e.target.value;

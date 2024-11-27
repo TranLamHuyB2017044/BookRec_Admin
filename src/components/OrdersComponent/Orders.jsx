@@ -60,7 +60,7 @@ export default function Orders({isSidebarOpen}) {
             field: 'status', headerName: 'Trạng thái', width: 150, renderCell: (params) => {
                 return (
                     <div>
-                        <p className={params.row.payment_status === 'Chưa thanh toán' ? 'text-[dodgerblue] ' : params.row.payment_status === 'Đã thanh toán' ? 'text-green-500' : 'text-red-500'}>{params.row.payment_status}</p>
+                        <p className={getPaymentStatusClass(params.row.payment_status)}>{params.row.payment_status}</p>
                     </div>
                 );
             },
@@ -75,7 +75,24 @@ export default function Orders({isSidebarOpen}) {
             },
         },
     ];
-
+    const getPaymentStatusClass = (status) => {
+        switch (status) {
+            case 'Đã tạo đơn hàng':
+                return 'text-gray-500';
+            case 'Đang chuẩn bị hàng':
+                return 'text-orange-500';
+            case 'Đơn hàng đang được giao':
+                return 'text-yellow-500';
+            case 'Đã thanh toán':
+                return 'text-[dodgerblue]';
+            case 'Đã giao':
+                return 'text-green-500';
+            case 'Đã hủy':
+                return 'text-red-500';
+            default:
+                return 'text-black';
+        }
+    };
     const order_statistic_list_class = 'flex gap-4 border border-gray-300 cursor-pointer bg-white p-4 items-center rounded-2xl min-w-[180px]'
     const order_statistic_list_full_class = 'flex gap-4 border border-gray-300 cursor-pointer bg-white p-4 items-center rounded-2xl min-w-[250px]'
     const sortedOrders = orders.toSorted((a, b) => new Date(b.order_date) - new Date(a.order_date)); 
