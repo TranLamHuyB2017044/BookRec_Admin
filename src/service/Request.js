@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const BaseURL = "http://localhost:5000/api/";
-const headers = { 
+const headers = {
     Accept: "application/json",
     "Content-Type": "multipart/form-data",
     "Access-Control-Allow-Credentials": true
@@ -13,11 +13,11 @@ const userHeader = {
     "Access-Control-Allow-Credentials": true
 }
 export const PublicRequest = axios.create({
-    baseURL:BaseURL,
-    headers:headers,
+    baseURL: BaseURL,
+    headers: headers,
 })
 
 export const UserRequest = axios.create({
-    baseURL:BaseURL,
+    baseURL: BaseURL,
     headers: userHeader,
 })

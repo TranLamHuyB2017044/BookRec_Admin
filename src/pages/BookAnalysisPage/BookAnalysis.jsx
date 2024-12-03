@@ -1,14 +1,8 @@
 import Navbar from '../../components/NavbarComponent/Navbar'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Footer from '../../components/FooterComponent/Footer';
 import Sidebar from '../../components/SideBarComponent/Sidebar';
-import SearchIcon from '@mui/icons-material/Search';
-import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
-import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
-import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
-import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
-
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
@@ -16,7 +10,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Bar } from 'react-chartjs-2';
 import KeywordAnalysis from './KeywordAnalysis';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, } from '@mui/material';
+import { UserRequest } from '../../service/Request';
+import MyAlert from '../../components/AlertComponent/Alert'
 export default function BookAnalysis() {
 
   const active = 5
@@ -24,15 +20,27 @@ export default function BookAnalysis() {
   const handleToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+  const [isLoading, setIsLoading] = useState(false);
+  const [inputText, setInputText] = useState('');
+  const [classificationResult, setClassificationResult] = useState('');
+  const [numberRatingByStatus, setNumberRatingByStatus] = useState([]);
 
+  useEffect(() => {
+    const getNumberRatingByStatus = async () => {
+      const rs = await UserRequest.get('/rating')
+      setNumberRatingByStatus(rs.data)
+    }
+
+    getNumberRatingByStatus()
+  }, [])
 
   const chartData = {
-    labels: ['Cực kỳ hài lòng', 'Hài lòng', 'Bình thường', 'Rất không hài lòng'],
+    labels: numberRatingByStatus.map((label) => label.user_status).reverse(),
     datasets: [
       {
         label: 'Số lượng đánh giá',
 
-        data: [3000, 1000, 2000, 1000],
+        data: numberRatingByStatus.map((label) => label.rating_count).reverse(),
         backgroundColor: [
           'rgba(75, 192, 192, 0.6)',
           'rgba(54, 162, 235, 0.6)',
@@ -49,6 +57,8 @@ export default function BookAnalysis() {
       }
     ]
   };
+
+
 
   const chartOptions = {
     responsive: true,
@@ -83,6 +93,33 @@ export default function BookAnalysis() {
     { keyword: 'Thất vọng', verySatisfied: 5, satisfied: 10, neutral: 20, veryDissatisfied: 120, totalCount: 155, percentage: 15.5 },
   ];
 
+  const handlePredictKeyword = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    if (!inputText.trim()) {
+      MyAlert.Alert('info', 'Vui lòng nhập từ khóa!');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await UserRequest.post('http://127.0.0.1:8000/predict', { inputText: inputText });
+
+      if (response.status === 200) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        const data = response.data;
+        setClassificationResult(data.prediction);
+      }
+    } catch (error) {
+      console.error('Lỗi:', error);
+      setClassificationResult('Không thể phân lớp từ khóa!');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
 
   return (
@@ -110,7 +147,7 @@ export default function BookAnalysis() {
               <TableContainer >
                 <Table >
                   <TableHead>
-                    <TableRow>
+                    <TableRow >
                       <TableCell sx={{ fontSize: '1.5rem' }}>Hình ảnh</TableCell>
                       <TableCell sx={{ fontSize: '1.5rem' }}>Tên sách</TableCell>
                       <TableCell sx={{ fontSize: '1.5rem' }}>Số lượng đã bán</TableCell>
@@ -121,9 +158,9 @@ export default function BookAnalysis() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.map((row) => (
+                    {rows.map((row, index) => (
                       <TableRow
-                        key={row.name}
+                        key={index}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 }, fontSize: '1.2rem' }}
                       >
                         <TableCell align="left">
@@ -141,45 +178,56 @@ export default function BookAnalysis() {
                 </Table>
               </TableContainer>
             </div>
-            <div className='bg-white rounded-2xl mx-16 my-12'>
+            {/* <div className='bg-white rounded-2xl mx-16 my-12'>
               <h2 className='font-semibold text-2xl p-8 border-b'>Phân tích từ khóa đánh giá</h2>
               <KeywordAnalysis keywordData={keywordData} />
-            </div>
+            </div> */}
             <div className='bg-white rounded-2xl mx-16 my-12'>
               <h2 className='font-semibold text-2xl p-8 border-b'>Phân lớp mức độ hài lòng dựa trên bình luận</h2>
-              <div className='flex gap-4 items-baseline'>
+              <form onSubmit={handlePredictKeyword} className='flex gap-4 items-baseline'>
                 <TextField
                   label="Nhập từ khóa"
                   variant="outlined"
                   multiline
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
                   InputProps={{
-                    style: { fontSize: "1.2rem" }
+                    style: { fontSize: '1.2rem' },
                   }}
                   InputLabelProps={{
-                    style: { fontSize: "1.2rem" }
+                    style: { fontSize: '1.2rem' },
                   }}
                   sx={{
                     '& .MuiOutlinedInput-root': {
-                      '& fieldset': {
-                        borderColor: 'gray',
-                      },
-                      '&:hover fieldset': {
-                        borderColor: 'dodgerblue',
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: 'dodgerblue',
-                      },
+                      '& fieldset': { borderColor: 'gray' },
+                      '&:hover fieldset': { borderColor: 'dodgerblue' },
+                      '&.Mui-focused fieldset': { borderColor: 'dodgerblue' },
                     },
                   }}
-                  style={{ marginTop: '20px', marginBottom: '20px', width: "35%", alignContent: "center", marginLeft: '20px', }}
+                  style={{ marginTop: '20px', marginBottom: '20px', width: '35%', marginLeft: '20px' }}
                 />
-                <Button size="large" sx={{height: '50px'}} variant="outlined">Dự đoán</Button>
-                  
-              </div>
+                <Button
+                  size="large"
+                  type='submit'
+                  sx={{ height: '50px' }}
+                  variant="outlined"
+                >
+                  Dự đoán
+                </Button>
+              </form>
+
+              {classificationResult && (
+                <div className="p-4 mt-4 bg-gray-100 rounded-md">
+                  {!isLoading && <h3 className="font-semibold text-lg">Kết quả phân lớp:</h3>}
+                  {isLoading ? <pre>
+                    Loading...
+                  </pre> : <pre>{classificationResult}</pre>}
+                </div>
+              )}
             </div>
           </div>
-          <div className='h-[80px]'><Footer /></div>
         </div>
+        <div className='h-[80px]'><Footer /></div>
       </div>
     </div>
   )
