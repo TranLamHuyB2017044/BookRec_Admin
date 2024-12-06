@@ -23,24 +23,24 @@ export default function BookAnalysis() {
   const [isLoading, setIsLoading] = useState(false);
   const [inputText, setInputText] = useState('');
   const [classificationResult, setClassificationResult] = useState('');
-  const [numberRatingByStatus, setNumberRatingByStatus] = useState([]);
+  const [numberRatingByStar, setNumberRatingByStar] = useState([]);
 
   useEffect(() => {
-    const getNumberRatingByStatus = async () => {
+    const getNumberRatingByStar = async () => {
       const rs = await UserRequest.get('/rating')
-      setNumberRatingByStatus(rs.data)
+      setNumberRatingByStar(rs.data)
     }
 
-    getNumberRatingByStatus()
+    getNumberRatingByStar()
   }, [])
 
   const chartData = {
-    labels: numberRatingByStatus.map((label) => label.user_status).reverse(),
+    labels: numberRatingByStar.map((label) => label.n_star).sort().reverse(),
     datasets: [
       {
         label: 'Số lượng đánh giá',
 
-        data: numberRatingByStatus.map((label) => label.rating_count).reverse(),
+        data: numberRatingByStar.map((label) => label.rating_count).sort().reverse(),
         backgroundColor: [
           'rgba(75, 192, 192, 0.6)',
           'rgba(54, 162, 235, 0.6)',
@@ -135,13 +135,13 @@ export default function BookAnalysis() {
 
             <div className='my-8'>
               <div className='bg-white rounded-2xl mx-16 p-8'>
-                <h2 className='font-semibold text-2xl border-b pb-4'>Biểu đồ thống kê mức độ hài lòng</h2>
+                <h2 className='font-semibold text-2xl border-b pb-4'>Biểu đồ thống kê bình luận theo số sao</h2>
                 <div className='mt-8'>
                   <Bar data={chartData} options={chartOptions} />
                 </div>
               </div>
             </div>
-            <div className='bg-white rounded-2xl mx-16'>
+            {/* <div className='bg-white rounded-2xl mx-16'>
               <h2 className='font-semibold text-2xl p-8 border-b'>Phân tích chi tiết sách</h2>
 
               <TableContainer >
@@ -177,7 +177,7 @@ export default function BookAnalysis() {
                   </TableBody>
                 </Table>
               </TableContainer>
-            </div>
+            </div> */}
             {/* <div className='bg-white rounded-2xl mx-16 my-12'>
               <h2 className='font-semibold text-2xl p-8 border-b'>Phân tích từ khóa đánh giá</h2>
               <KeywordAnalysis keywordData={keywordData} />

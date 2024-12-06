@@ -13,6 +13,8 @@ export default function OrderBookList() {
         getAllPurchaseOrders()
     }, [])
 
+    console.log(purchaseOrders)
+
     const TotalPrice = useCallback(items => {
         let total = 0;
         // eslint-disable-next-line array-callback-return

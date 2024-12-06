@@ -125,7 +125,9 @@ export default function Booklist({ isSidebarOpen }) {
                             if (deleteBook.status === 200) {
                                 MyAlert.Alert('success', `Xóa thành công`);
                                 setQuery('')
-                                window.location.reload()
+                                setTimeout(() => {
+                                    window.location.reload()
+                                }, 2000)
                             } else {
                                 MyAlert.Alert('error', `${deleteBook.data.response}`);
                             }
