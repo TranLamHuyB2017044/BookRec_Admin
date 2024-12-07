@@ -6,6 +6,7 @@ import SalesReport from '../../components/StatisticComponent/SalesReport'
 import Chart from '../../components/StatisticComponent/Chart'
 import BestSeller from '../../components/StatisticComponent/BestSeller'
 import News from '../../components/StatisticComponent/News'
+import PrintIcon from '@mui/icons-material/Print';
 export default function Statistic() {
     const active = 3
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -21,14 +22,21 @@ export default function Statistic() {
                 </div>
                 <div className={`col-span-4 transition-all ease-in-out duration-300  flex flex-col justify-between ${isSidebarOpen ? ' ' : '-translate-x-[300px] mx-auto w-[98vw]'}`}>
                     <div className=' mt-[60px]'>
-                        <h1 className='font-semibold text-5xl ml-16 mt-12'>Thống kê doanh thu</h1>
+                        <div className='flex justify-between'>
+
+                            <h1 className='font-semibold text-5xl ml-16 mt-12'>Thống kê doanh thu</h1>
+                            <button
+                                className={'mr-16 mt-12 active:translate-y-1 hover:bg-gradient-to-r from-blue-500 to-cyan-400 px-4 py-2 rounded-md border border-white bg-[dodgerblue] text-white flex items-center  gap-2 justify-center'}
+                            ><PrintIcon fontSize='large'/> Xuất báo cáo</button>
+
+                        </div>
                         <div className={isSidebarOpen ? 'flex gap-8' : 'flex gap-16'}>
                             <div>
-                                <SalesReport isSidebarOpen={isSidebarOpen}/>
-                                <Chart isSidebarOpen={isSidebarOpen}/>
-                                <BestSeller isSidebarOpen={isSidebarOpen}/>
+                                <SalesReport isSidebarOpen={isSidebarOpen} />
+                                <Chart isSidebarOpen={isSidebarOpen} />
+                                <BestSeller isSidebarOpen={isSidebarOpen} />
                             </div>
-                            <News isSidebarOpen={isSidebarOpen}/>
+                            <News isSidebarOpen={isSidebarOpen} />
                         </div>
                     </div>
                     <div className='h-[80px]'><Footer /></div>
