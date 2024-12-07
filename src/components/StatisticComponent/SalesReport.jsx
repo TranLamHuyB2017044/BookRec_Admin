@@ -16,7 +16,6 @@ export default function SalesReport({ isSidebarOpen }) {
     const [statisticsAmountSpent, setStatisticsAmountSpent] = useState()
 
     const [numUsers, setNumUsers] = useState()
-
     useEffect(() => {
         const getSalesData = async () => {
             try {
@@ -40,9 +39,9 @@ export default function SalesReport({ isSidebarOpen }) {
                 ]);
 
                 setStatisticsOrder(orderRS.data.tong_so_don);
-                setStatisticsRevenue(revenueRS.data.tong_gia_tien);
-                setStatisticsAmountSpent(amountRS.data)
 
+                setStatisticsRevenue(revenueRS.data.tong_doanh_thu);
+                setStatisticsAmountSpent(amountRS.data)
             }
             catch (error) {
                 console.log(error)
@@ -75,7 +74,7 @@ export default function SalesReport({ isSidebarOpen }) {
 
 
     return (
-        <div className={isSidebarOpen === false ? 'flex justify-start gap-10 mt-16 ml-16 ' : `flex justify-start gap-10 mt-16 ml-8`}>
+        <div className={isSidebarOpen === false ? 'flex justify-start ml-60 gap-10 mt-16 mx-auto ' : `flex justify-start gap-10 mt-16 ml-8`}>
             <div className={isSidebarOpen === false ? 'border-[1px] bg-white px-6 py-5 w-[300px] h-[150px] rounded-2xl' : 'border-[1px] bg-white px-6 py-5 w-[250px] h-[150px] rounded-2xl'}>
                 <div className='flex justify-between items-center relative'>
                     <div className='flex items-center gap-2'>

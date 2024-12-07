@@ -23,7 +23,7 @@ export default function BestSeller({ isSidebarOpen }) {
     }
 
     return (
-        <div className={isSidebarOpen === false ? 'my-16 ml-16 p-16 bg-white w-max rounded-2xl px-[83px]' : 'my-12 ml-8 p-8 bg-white w-max rounded-2xl'}>
+        <div className={isSidebarOpen === false ? 'my-16 p-16 bg-white w-[1200px] mx-auto rounded-2xl px-[83px]' : 'my-12 mx-auto ml-8 p-8 bg-white w-max rounded-2xl'}>
             <div className='flex items-center gap-2'>
                 <h3 className='text-3xl text-blue-500'>Sách bán chạy |</h3>
                 <p className='text-gray-500 text-2xl mt-1 opacity-80'>Trong tháng</p>

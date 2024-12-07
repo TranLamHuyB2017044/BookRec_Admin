@@ -96,7 +96,8 @@ export default function Orders({isSidebarOpen}) {
     const order_statistic_list_class = 'flex gap-4 border border-gray-300 cursor-pointer bg-white p-4 items-center rounded-2xl min-w-[180px]'
     const order_statistic_list_full_class = 'flex gap-4 border border-gray-300 cursor-pointer bg-white p-4 items-center rounded-2xl min-w-[250px]'
     const sortedOrders = orders.toSorted((a, b) => new Date(b.order_date) - new Date(a.order_date)); 
-    const confirmedOrder = orders.filter((orders) => orders.payment_status === 'Đã thanh toán')
+    const confirmedOrder = orders.filter((orders) => orders.payment_status === 'Đã giao')
+    const checkoutdOrder = orders.filter((orders) => orders.payment_status === 'Đã thanh toán')
     const rejectedOrder = orders.filter((orders) => orders.payment_status === 'Đã hủy')
     return (
         <div className='flex flex-col mt-20'>
@@ -115,13 +116,22 @@ export default function Orders({isSidebarOpen}) {
                         <AssignmentTurnedInOutlinedIcon fontSize='large' className='text-green-600' />
                     </div>
                     <div className='flex flex-col '>
-                        <p className='text-md opacity-80'>Đã thanh toán</p>
+                        <p className='text-md opacity-80'>Đã giao</p>
                         <h3 className='text-bold text-4xl'>{confirmedOrder.length}</h3>
                     </div>
                 </div>
-                <div className={ isSidebarOpen === true ? order_statistic_list_class : order_statistic_list_full_class}>
+                <div className={ isSidebarOpen === true ? order_statistic_list_class : order_statistic_list_full_class} >
                     <div className='border p-3 bg-blue-200 rounded-xl'>
-                        <AssignmentOutlinedIcon fontSize='large' className='text-blue-500' />
+                        <AssignmentTurnedInOutlinedIcon fontSize='large' className='text-blue-600' />
+                    </div>
+                    <div className='flex flex-col '>
+                        <p className='text-md opacity-80'>Đã thanh toán</p>
+                        <h3 className='text-bold text-4xl'>{checkoutdOrder.length}</h3>
+                    </div>
+                </div>
+                <div className={ isSidebarOpen === true ? order_statistic_list_class : order_statistic_list_full_class}>
+                    <div className='border p-3 bg-red-200 rounded-xl'>
+                        <AssignmentOutlinedIcon fontSize='large' className='text-red-500' />
                     </div>
                     <div className='flex flex-col '>
                         <p className='text-md opacity-80'>Đã hủy</p>
