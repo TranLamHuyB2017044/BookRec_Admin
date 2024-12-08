@@ -37,9 +37,9 @@ export default function SalesReport({ isSidebarOpen }) {
                     UserRequest.get(revenueEndpoint),
                     UserRequest.get(amountEndpoint)
                 ]);
+                console.log(revenueRS)
 
                 setStatisticsOrder(orderRS.data.tong_so_don);
-
                 setStatisticsRevenue(revenueRS.data.tong_doanh_thu);
                 setStatisticsAmountSpent(amountRS.data)
             }
@@ -49,7 +49,7 @@ export default function SalesReport({ isSidebarOpen }) {
         }
         getSalesData()
     }, [ordersType, revenueType, amountType])
-    console.log(statisticsAmountSpent)
+    
     useEffect(() => {
         const countNumUsers = async () => {
             const userList = await UserRequest.get('/user')

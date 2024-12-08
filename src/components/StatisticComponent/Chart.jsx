@@ -39,12 +39,10 @@ export default function Chart({ isSidebarOpen }) {
             const maxExpense = Math.max(...statisData.map(data => parseInt(data.total_expense)));
             const maxRevenue = Math.max(...statisData.map(data => parseInt(data.total_revenue)));
 
-            console.log(maxRevenue, maxExpense)
             const maxValue = Math.max(maxExpense, maxRevenue);
             const roundedMaxValue = Math.ceil(maxValue);
 
             setMaxValue(roundedMaxValue);
-            console.log(roundedMaxValue);
             setOrderData({
                 labels: statisData.map((data) => `${data.month}/${data.year}`),
                 datasets: [
